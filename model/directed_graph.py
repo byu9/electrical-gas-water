@@ -22,17 +22,17 @@ class DirectedGraph:
             self._children[node] = set()
             self._parents[node] = set()
         
-    def add_parent(self, node, parents):
-        parents = set(parents)
+    def add_children(self, node, children):
+        children = set(children)
         
         if node not in self._nodes:
-            raise ValueError('Adding parents of a nonexistent node.')
+            raise ValueError('Adding children to a nonexistent node.')
 
-        for parent in parents:
-            if parent not in self._nodes:
-                raise ValueError('Nonexistent parent.')
+        for child in children:
+            if child not in self._nodes:
+                raise ValueError('Nonexistent child.')
 
-        self._parents[node].update(parents)
-        for parent in parents:
-            self._children[parent].add(node)
+        self._children[node].update(children)
+        for child in children:
+            self._parents[child].add(node)
 
