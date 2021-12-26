@@ -101,6 +101,7 @@ segment_z = {
 
     # stored as per-mile for convenience
     # ohms at 4.16kV side
+    # Per Junkai, normalizing to the primary side to avoid per-unit
     'XFM-1': per_unit_to_ohms(pu=(1.1+2j)/100,
                               volt_amp=500E3, volt=4.16E3),
 
