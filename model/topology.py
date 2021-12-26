@@ -133,6 +133,7 @@ segment_b = {
     'Substation': 0,
 }
 
+lines = line_segments.keys()
 
 line_z = {
     line: segment_z[seg_type] * miles
