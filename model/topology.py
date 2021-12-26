@@ -19,7 +19,7 @@ buses = {
     '692': {'675'},
     '675': {},
     # substation 650 as impedance from ideal source 0
-    '0': {'650'},
+    # '0': {'650'},
 }
 
 digraph = DirectedGraph(buses.keys())
@@ -75,7 +75,7 @@ line_segments = {
     Line('684', '611'): ('605', feet_to_miles(300)),
     Line('692', '675'): ('606', feet_to_miles(500)),
     # substation impedance to be stored as per-mile for convenience
-    Line('0', '650'): ('Substation', 1),
+    # Line('0', '650'): ('Substation', 1),
 }
 
 
