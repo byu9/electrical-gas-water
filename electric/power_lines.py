@@ -6,7 +6,7 @@ def feet_to_miles(feet):
     return miles
 
 
-segments = {
+lines = {
     #----------------------------------------------------------------------
     # Specify power line segments as the following format
     # (from_bus, to_bus): (line_type, miles)
@@ -39,7 +39,7 @@ def per_unit_to_ohms(pu, volt_amp, volt):
     return ohms
 
 # Per Xiaochu, assume single phase using phase C data
-segment_z = {
+z_per_mile_by_type = {
     #----------------------------------------------------------------------
     # Specify power line per-mile impedance as the following format
     # line_type: ohms_per_mile
@@ -72,7 +72,7 @@ segment_z = {
 }
 
 # Per Xiaochu, assume single phase using phase C data
-segment_b = {
+b_per_mile_by_type= {
     #----------------------------------------------------------------------
     # Specify power line Pi model capacitance in the following format
     # line_type: siemens_per_mile
@@ -95,7 +95,7 @@ segment_b = {
 
 
 
-segment_i_lims = {
+i_lim_by_type = {
     #----------------------------------------------------------------------
     # Specify power line current limits as the following format
     # line_type: limit_amps
@@ -117,7 +117,7 @@ segment_i_lims = {
 }
 
 
-segment_s_lims = {
+s_lim_by_type = {
     #----------------------------------------------------------------------
     # Specify power line apparent power limits as the following format
     # line_type: limit_volt_amps
@@ -144,20 +144,20 @@ segment_s_lims = {
 # Applies line type mapping and calculates parameters
 #----------------------------------------------------------------------
 line_z = {
-    line: segment_z[line_type] * miles
-    for line, (line_type, miles) in segments.items()
+    line: z_per_mile_by_type[line_type] * miles
+    for line, (line_type, miles) in lines.items()
 }
 
 line_r = {line: z.real for line, z in line_z.items()}
 line_x = {line: z.imag for line, z in line_z.items()}
 
 line_i_lims = {
-    line: segment_i_lims[line_type]
-    for line, (line_type, _) in segments.items()
+    line: i_lim_by_type[line_type]
+    for line, (line_type, _) in lines.items()
 }
 
 line_s_lims = {
-    line: segment_s_lims[line_type]
-    for line, (line_type, _) in segments.items()
+    line: s_lim_by_type[line_type]
+    for line, (line_type, _) in lines.items()
 }
 
