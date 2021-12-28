@@ -17,7 +17,7 @@ class DirectedGraph:
         self._children[node].update(children)
         for child in children:
             self._parents[child].add(node)
-            
+
     @property
     def nodes(self):
         return self._children.keys()
@@ -49,7 +49,7 @@ class DirectedGraph:
     #----------------------------------------------------------------------
     def descendents_of(self, node):
         children = self._children[node]
-        
+
         yield from children
 
         for child in children:
@@ -62,4 +62,3 @@ class DirectedGraph:
 
         for parent in parents:
             yield from self.ancestors_of(parent)
-
