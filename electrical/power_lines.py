@@ -141,7 +141,7 @@ s_lim_by_type = {
 
 
 #----------------------------------------------------------------------
-# Applies line type mapping and calculates parameters
+# Applies line type mapping
 #----------------------------------------------------------------------
 line_z = {
     line: z_per_mile_by_type[line_type] * miles
@@ -160,4 +160,3 @@ line_s_lims = {
     line: s_lim_by_type[line_type]
     for line, (line_type, _) in lines.items()
 }
-
