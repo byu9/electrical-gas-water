@@ -49,6 +49,10 @@ from electrical.batteries import (
 from electrical.generators import (
     generator_costs as Cp,
     generator_buses,
+    generator_p_lims_lo as PGlims_lo,
+    generator_p_lims_hi as PGlims_hi,
+    generator_q_lims_lo as QGlims_lo,
+    generator_q_lims_hi as QGlims_hi,
 )
 
 from electrical.power_to_gas import (
@@ -103,14 +107,18 @@ l = {
 # Decision variables for buses
 #----------------------------------------------------------------------
 PG = {
-    (i, t): model.addVar(name='PG({})@{}'.format(i, t))
+    (i, t): model.addVar(name='PG({})@{}'.format(i, t),
+                         lb=PGlims_lo[i],
+                         ub=PGlims_hi[i])
 
     for i in generator_buses
     for t in T
 }
 
 QG = {
-    (i, t): model.addVar(name='QG({})@{}'.format(i, t))
+    (i, t): model.addVar(name='QG({})@{}'.format(i, t),
+                         lb=QGlims_lo[i],
+                         ub=QGlims_hi[i])
 
     for i in generator_buses
     for t in T
