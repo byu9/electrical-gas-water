@@ -1,18 +1,18 @@
 #!/usr/bin/env python3
 
 battery_buses = {
-    '675',
-    '671',
+    '684',
+    '692',
 }
 
 battery_s_lims = {
-    '675': 1E6,
-    '671': 1E6,
+    '684': 1E6,
+    '692': 1E6,
 }
 
 battery_charge_lims = {
-    '675': (1, 10E6),
-    '671': (1, 10E6),
+    '684': (1, 10E6),
+    '692': (1, 10E6),
 }
 
 
@@ -25,8 +25,8 @@ for bus, (lo, hi) in battery_charge_lims.items():
 
 
 battery_initial_charge = {
-    '675': 1,
-    '671': 1,
+    '684': 1,
+    '692': 1,
 }
 
 inverter_efficiencies = {
@@ -36,8 +36,8 @@ inverter_efficiencies = {
     #
     # Unspecified buses do not have inverters
     #----------------------------------------------------------------------
-    '675': 0.98,
-    '671': 0.98,
+    '684': 0.98,
+    '692': 0.98,
 }
 
 charger_efficiencies = {
@@ -47,6 +47,6 @@ charger_efficiencies = {
     #
     # Unspecified buses do not have chargers
     #----------------------------------------------------------------------
-    '675': 0.95,
-    '671': 0.95,
+    '684': 0.95,
+    '692': 0.95,
 }

@@ -11,17 +11,18 @@ generator_buses = {
 
 
 # Per Xiaochu, polynomial written in increasing power
+# watts -> MW since a, b, c are based on $/MWh
 def gas_gen_cost(watts, a, b, c):
-    cost = a + b*watts + c*watts**2
+    cost = a + b*watts*1E-6 + c*(watts*1E-6)**2
     return cost
 
 def coal_gen_cost(watts, a, b, c):
-    cost = a + b*watts + c*watts**2
+    cost = a + b*watts*1E-6 + c*(watts*1E-6)**2
     return cost
 
 
 def wholesale_cost(watts, incremental_cost):
-    cost = watts * incremental_cost
+    cost = watts*1E-6 * incremental_cost
     return cost
 
 
