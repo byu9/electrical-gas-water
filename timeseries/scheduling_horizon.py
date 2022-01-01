@@ -7,8 +7,9 @@
 # Make sure the time points are unique and hashable, and that the list
 # is incremental.
 #----------------------------------------------------------------------
-scheduling_horizon = [
-    '2022-01-01T00:00:00Z',
-    '2022-01-01T00:01:00Z',
-]
+from pandas import read_csv
 
+df_scheduling_horizon = read_csv('timeseries/tables/scheduling_horizon.csv',
+                                 parse_dates=[0]).set_index('t')
+
+scheduling_horizon = df_scheduling_horizon.index
