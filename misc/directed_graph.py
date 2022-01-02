@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 class DirectedGraph:
-    _parents = dict()
-    _children = dict()
-
     def __init__(self, nodes):
+        self._parents = dict()
+        self._children = dict()
+
         nodes = set(nodes)
         for node in nodes:
             self._children[node] = set()
