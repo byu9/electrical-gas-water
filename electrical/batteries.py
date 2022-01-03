@@ -6,11 +6,13 @@ battery_buses = {
 }
 
 battery_s_lims = {
+    # bus: volt_amps
     '684': 1E6,
     '692': 1E6,
 }
 
 battery_charge_lims = {
+    # bus: (watt_hours_lo, watt_hours_hi)
     '684': (1, 10E6),
     '692': (1, 10E6),
 }
@@ -25,28 +27,19 @@ for bus, (lo, hi) in battery_charge_lims.items():
 
 
 battery_initial_charge = {
+    # bus: watt_hours
     '684': 1,
     '692': 1,
 }
 
 inverter_efficiencies = {
-    #----------------------------------------------------------------------
-    # Specify inverters in the following format
-    # bus: efficiency
-    #
-    # Unspecified buses do not have inverters
-    #----------------------------------------------------------------------
+    # bus: 0_to_1
     '684': 0.98,
     '692': 0.98,
 }
 
 charger_efficiencies = {
-    #----------------------------------------------------------------------
-    # Specify chargers in the following format
-    # bus: efficiency
-    #
-    # Unspecified buses do not have chargers
-    #----------------------------------------------------------------------
+    # bus: 0_to_1
     '684': 0.95,
     '692': 0.95,
 }

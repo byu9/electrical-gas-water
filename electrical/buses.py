@@ -1,13 +1,7 @@
 #!/usr/bin/env python3
 
 bus_v_lims = {
-    #----------------------------------------------------------------------
-    # Specify bus voltage limits in the following format
-    # bus: (low_volts, high_volts)
-    #
-    # Make sure to specify for all the buses.
-    #----------------------------------------------------------------------
-
+    # bus: (volts_lo, volts_hi)
     # Per Junkai, using 0.95~1.05
     '650': (0.95*4.16E3, 1.05*4.16E3),
     '632': (0.95*4.16E3, 1.05*4.16E3),
@@ -23,7 +17,6 @@ bus_v_lims = {
     '692': (0.95*4.16E3, 1.05*4.16E3),
     '675': (0.95*4.16E3, 1.05*4.16E3),
 }
-
 
 bus_v_lims_lo = dict()
 bus_v_lims_hi = dict()

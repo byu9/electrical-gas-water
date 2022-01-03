@@ -9,46 +9,42 @@ generator_buses = {
 }
 
 
-
 # Per Xiaochu, polynomial written in increasing power
-# watts -> MW since a, b, c are based on $/MWh
+# a, b, c are based on $/MWh
 def gas_gen_cost(watts, a, b, c):
     mega_watts = watts / 1E6
-    dollars = a + b * mega_watts + c * mega_watts**2
-    return dollars
+    dollars_per_hour = a + b * mega_watts + c * mega_watts**2
+    return dollars_per_hour
 
 def coal_gen_cost(watts, a, b, c):
     mega_watts = watts / 1E6
-    dollars = a + b * mega_watts + c * mega_watts**2
-    return dollars
+    dollars_per_hour = a + b * mega_watts + c * mega_watts**2
+    return dollars_per_hour
 
 
-def wholesale_cost(watts, dollars_per_mega_watt):
+def wholesale_cost(watts, dollars_per_mega_watt_hour):
     mega_watts = watts / 1E6
-    dollars = mega_watts * dollars_per_mega_watt
-    return dollars
-
+    dollars_per_hour = mega_watts * dollars_per_mega_watt_hour
+    return dollars_per_hour
 
 
 generator_costs = {
-    #----------------------------------------------------------------------
-    # Specify generator cost functions in the following format
-    # Bus: callable
-    #
-    # Unspecified buses do not have generators
-    #----------------------------------------------------------------------
+    # bus: callable(watts) -> dollars_per_hour
     '632': lambda watts: coal_gen_cost(watts, 40, 11, 0.5),
     '671': lambda watts: gas_gen_cost(watts, 20, 9, 1),
     '650': lambda watts: wholesale_cost(watts, 13.5),
 }
 
 generator_p_lims = {
+    # bus: (watts_lo, watts_hi)
     '632': (1E6, 5E6),
     '671': (0.5E6, 2E6),
     '650': (0, +inf),
 }
 
 generator_q_lims = {
+    # bus: (vars_lo, vars_hi)
+    # Per Xiaochu, using 0 as the lower limit
     '632': (0, +inf),
     '671': (0, +inf),
     '650': (0, +inf),
