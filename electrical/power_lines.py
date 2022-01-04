@@ -7,12 +7,7 @@ def feet_to_miles(feet):
 
 
 lines = {
-    #----------------------------------------------------------------------
-    # Specify power line segments as the following format
     # (from_bus, to_bus): (line_type, miles)
-    #
-    # Make sure to specify all the segments.
-    #----------------------------------------------------------------------
     ('632', '645'): ('603', feet_to_miles(500)),
     ('632', '633'): ('602', feet_to_miles(500)),
     # transformer impedance to be stored as per-mile for convenience
@@ -40,12 +35,7 @@ def per_unit_to_ohms(pu, volt_amp, volt):
 
 # Per Xiaochu, assume single phase using phase C data
 z_per_mile_by_type = {
-    #----------------------------------------------------------------------
-    # Specify power line per-mile impedance as the following format
     # line_type: ohms_per_mile
-    #
-    # Make sure to specify all the line types referenced by segments.
-    #----------------------------------------------------------------------
     '601': 0.3414 + 1.0348j,
     '602': 0.7436 + 1.2112j,
     '603': 1.3238 + 1.3569j,
@@ -73,12 +63,7 @@ z_per_mile_by_type = {
 
 # Per Xiaochu, assume single phase using phase C data
 b_per_mile_by_type= {
-    #----------------------------------------------------------------------
-    # Specify power line Pi model capacitance in the following format
-    # line_type: siemens_per_mile
-    #
-    # Make sure to specify all the line types referenced by segments.
-    #----------------------------------------------------------------------
+    # line_type: pi_model_siemens_per_mile
     '601': 5.6386E-3,
     '602': 5.4246E-3,
     '603': 4.6658E-3,
@@ -96,12 +81,7 @@ b_per_mile_by_type= {
 
 
 i_lim_by_type = {
-    #----------------------------------------------------------------------
-    # Specify power line current limits as the following format
-    # line_type: limit_amps
-    #
-    # Make sure to specify all the line types referenced by segments.
-    #----------------------------------------------------------------------
+    # line_type: amps
 
     # Per Junkai, using 10kA as placeholder
     '601': 10E3,
@@ -118,13 +98,7 @@ i_lim_by_type = {
 
 
 s_lim_by_type = {
-    #----------------------------------------------------------------------
-    # Specify power line apparent power limits as the following format
-    # line_type: limit_volt_amps
-    #
-    # Make sure to specify all the line types referenced by segments.
-    #----------------------------------------------------------------------
-
+    # line_type: volt_amps
     # Per Junkai, using 10MVA as placeholder
     '601': 10E6,
     '602': 10E6,
