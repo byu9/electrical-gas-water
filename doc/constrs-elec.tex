@@ -1,0 +1,57 @@
+\subsection{Electrical Constraints}
+
+For all buses $i$ \atallt{}
+\begin{equation}
+  \sum_{j \in \sC_i} P_{ij,t} - \sum_{k \in \sA_i} (P_{ki,t} - r_{ki} l_{ki,t}) =
+  P^G_{i,t} + P^R_{i,t} + P^{ES}_{i,t} - PT_{i,t} - P^L_{i,t} - P^P_{i,t}
+\end{equation}
+
+\begin{equation}
+  \sum_{j \in \sC_i} Q_{ij,t} - \sum_{k \in \sA_i} (Q_{ki,t} - x_{ki} l_{ki,t}) =
+  Q^G_{i,t} + Q^R_{i,t} + Q^{ES}_{i,t} - QT_{i,t} - Q^L_{i,t} - Q^P_{i,t}
+\end{equation}
+
+
+For all buses $i$ and all direct children $j \in \sC_i$ \atallt{}
+\begin{equation}
+  v_{i,t} - v_{j,t} = 2r_{ij}P_{ij,t} + 2x_{ij}Q_{ij,t} - z^2_{ij}l_{ij,t}
+\end{equation}
+
+\begin{equation}
+  P^2_{ij,t} + Q^2_{ij,t} \leq v_{i,t} l_{ij,t}
+\end{equation}
+
+\begin{equation}
+  \hi{S_{ij}}^2v_i + \lo{v_i}\hi{v_i}l_{ij,t} \leq
+  \hi{S_{ij}}^2 (\lo{v_i} + \hi{v_i})
+\end{equation}
+
+For all directed edges $ij$ \atallt{}
+\begin{equation}
+  P^2_{ij,t} + Q^2_{ij,t} \leq \hi{S^2_{ij}}
+\end{equation}
+
+For all battery buses $i$ \atallt{}
+\begin{equation}
+  (r^{Batt}_i + r^{Cvt}_i)(P^{ES}_{i,t})^2 + r^{Cvt}_i (Q^{ES}_{i,t})^2 \leq
+  L^{ES}_{i,t}v_{i,t}
+\end{equation}
+
+\begin{equation}
+  r^{Batt}_i (Q^{ES}_{i,t})^2 + \lo{v_i} L^{ES}_{i,t} \leq
+  (\hi{S^{ES}_i})^2(r^{Batt}_i + r^{Cvt}_i)
+\end{equation}
+
+\begin{equation}
+  (\hi{S^{ES}_i})^2v_i + \lo{v_i}\hi{v_i}L^{ES}_{i,t} \leq
+  (\hi{S^{ES}_i})^2(\lo{v_i} + \hi{v_i})
+\end{equation}
+
+\begin{equation}
+  (P^{ES}_{i,t})^2 + (Q^{ES}_{i,t})^2 \leq (\hi{S^{ES}_{i,t}})^2
+\end{equation}
+
+For all battery buses $i$ \atallextt{} excluding the extended initial timepoint
+\begin{equation}
+  E^{ES}_{i,t} = E^{ES}_{i,t-1} - P^{ES}_{i,t} - L^{ES}_{i,t}
+\end{equation}

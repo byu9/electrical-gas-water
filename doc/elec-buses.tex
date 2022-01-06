@@ -1,0 +1,63 @@
+\paragraph{For All Electrical Buses}
+\begin{itemize}
+
+\item $v_{i,t}$ squared average bus voltage in \gls{unit:vsq} of bus $i$
+over \intervaloft{}
+
+\begin{itemize} \item \gls{define} decision variable
+      $[\lo{v_i}, \hi{v_i}]$ for all buses $i$ \atallt{}. \end{itemize}
+
+\item $P^G_{i,t}, Q^G_{i,t}$ average non-renewable real power and reactive power
+  generation in \gls{unit:p} and \gls{unit:q} on bus $i$ over \intervaloft{}.  A
+  positive sign indicates power entering the bus.
+
+\begin{itemize} \item \gls{define}
+  decision variable $[\lo{P^G_i}, \hi{P^G_i}]$ and $[\lo{Q^G_i}, \hi{Q^G_i}]$
+  for all buses $i$ connected to a non-renewable generator (including grid
+  connection points) \atallt{}.  \end{itemize}
+
+\item $P^R_{i,t}, Q^R_{i,t}$ average renewable real and reactive power
+  generation on bus $i$ in \gls{unit:p} and \gls{unit:q} over \intervaloft{}. A
+  positive sign indicates power entering the bus.
+
+\begin{itemize}
+
+\item \gls{imported} constant for all renewable buses $i$ \atallt{}.
+
+\item \gls{define}  constant 0 for all non-renewable buses $i$ \atallt{}.
+
+\end{itemize}
+
+\item $P^L_{i,t}, Q^L_{i,t}$ average load real and reactive power consumption on
+  bus $i$ in \gls{unit:p} and \gls{unit:q} over \intervaloft{}.\ A positive sign
+  indicates power leaving the bus.
+
+\begin{itemize}
+
+\item \gls{imported} constant for all buses $i$ at all timepoints $t$ in the
+  scheduling horizon.  \end{itemize}
+
+\item $P^P_{i,t}, Q^P_{i,t}$ average water pump real and reactive power
+  consumption on bus $i$ in \gls{unit:p} and \gls{unit:q} over \intervaloft{}. A
+  positive sign indicates power leaving the
+  bus.  \begin{itemize} \item \gls{define} decision variable
+  $[\lo{P^P_i}, \hi{P^P_i}]$ and $[\lo{Q^P_i}, \hi{Q^P_i}]$ for all water pump
+  buses \atallt{}.  \item \gls{define} constant 0 for all non-water-pump
+  buses \atallt{}.  \end{itemize}
+
+\item $P^{ES}_{i,t}, Q^{ES}_{i,t}$ average energy storage discharge real and
+  reactive power on bus $i$ in \gls{unit:p} and \gls{unit:q}
+  over \intervaloft{}. A positive sign indicates power entering the
+  bus.  \begin{itemize} \item \gls{define} decision variable $(-\infty, \infty)$
+  for all battery buses $i$ \atallt{}.  \item \gls{define} constant $0$ for all
+  non-battery buses $i$ \atallt{}.  \end{itemize}
+
+\item $PT_{i,t}, QT_{i,t}$ average power-to-gas real and reactive power
+  consumption on bus $i$ in \gls{unit:p} and \gls{unit:q} over \intervaloft{}. A
+  positive sign indicates power leaving the
+  bus.  \begin{itemize} \item \gls{define} decision variable
+  $[\lo{PT_i}, \hi{PT_i}]$ and $[\lo{QT_i}, \hi{QT_i}]$ for all power-to-gas
+  buses $i$ \atallt{}.  \item \gls{define} constant $0$ for all non-power-to-gas
+  buses $i$ \atallt{}.  \end{itemize}
+
+\end{itemize}

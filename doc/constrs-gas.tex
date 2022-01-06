@@ -1,0 +1,37 @@
+\subsection{Gas Constraints}
+
+For all gas nodes $m$ \atallt{}
+\begin{equation}
+  GL^S_{m,t} + GT_{m,t} + \sum_{s\in \sA_m}{GL_{sm,t}} - \sum_{r\in
+    \sC_m}{GL_{mr,t}} + GL^{dis}_{m,t} - GL^{ch}_{m,t} = \tau_{m,t} +
+  D^{gas}_{m,t} + GL^G_{m,t}
+\end{equation}
+
+
+
+For all non-compressor-enabled pipelines $sr$ \atallt{}
+\begin{equation}
+  GL_{sr,t} = \Phi_{sr}(\Pi_{s,t} - \Pi_{r,t})
+\end{equation}
+
+
+
+For all compressor-enabled pipelines $sr$ \atallt{}
+\begin{equation}
+  \Pi_{s,t} \leq \Pi_{r,t}
+\end{equation}
+
+\begin{equation}
+  \tau_{s,t} = \sigma_1 GL_{sr,t} + \sigma_2 \Pi_{r,t} + \sigma_3 \Pi_{s,t} +
+  \sigma_4
+\end{equation}
+$\sigma_1, \sigma_2, \sigma_3, \sigma_4$ are given constants.
+
+
+
+For all gas storage nodes $m$ \atallextt{} excluding the extended initial
+timepoint
+\begin{equation}
+  SOC_{m,t} = SOC_{m,t-1} + \eta^G GL^{ch}_{m,t} - \frac{1}{\eta^G}
+  GL^{dis}_{m,t}
+\end{equation}

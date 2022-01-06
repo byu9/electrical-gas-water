@@ -1,0 +1,54 @@
+\paragraph{For All Gas Nodes}
+\begin{itemize}
+
+\item $\Pi_{m,t}$ squared average gas pressure in \gls{unit:pressq} of node $m$
+  over \intervaloft{}.  \begin{itemize} \item \gls{define} decision variable
+    $[\lo{\Pi_m}, \hi{\Pi_m}]$ for all gas nodes $m$ \atallt{}.  \end{itemize}
+
+\item $GL^S_{m,t}$ average volumetric supply flow on node $m$ in
+  \gls{unit:volume/t} over \intervaloft{}. A positive sign indicates gas
+  entering the node.  \begin{itemize} \item \gls{define} decision variable
+  $[\lo{GL^S_m}, \hi{GL^S_m}]$ for all gas supply nodes
+  $m$ \atallt{}.  \item \gls{define} constant $0$ for all non-gas-supply-nodes
+  $m$ \atallt{}.  \end{itemize}
+
+\item $GT_{m,t}$ average volumetric flow in \gls{unit:volume/t}
+of power-to-gas production on node $m$ over \intervaloft{}. A positive sign
+  indicates gas entering the node.  \begin{itemize} \item \gls{define} decision
+  variable $[\lo{GT_{m,t}}, \hi{GT_{m,t}}]$ for all P2G nodes
+  $m$ \atallt{}. \item \gls{define} constant $0$ for all non-P2G nodes
+  $m$ \atallt{}.  \end{itemize}
+
+
+\item $GL^{ch}_{m,t}, GL^{dis}_{m,t}$ average volumetric flow in \gls{unit:volume/t}
+of gas storage charge or discharge on node $m$ over \intervaloft{}. A positive
+  sign on $GL^{ch}_{m,t}$ indicates gas leaving the
+  node.  \begin{itemize} \item \gls{define} decision variable
+  $[0, \hi{GL^{ch}_m}]$ or $[0, \hi{GL^{dis}_m}]$ for all gas storage nodes
+  $m$ \atallt{}.  \item \gls{define} constant $0$ for all non-gas-storage nodes
+  $m$ \atallt{}. \end{itemize}
+
+\item $GL^G_{m,t}$ average volumetric flow in \gls{unit:volume/t} of gas-fired
+generators on node $m$ over\intervaloft{}. A positive sign indicates gas leaving
+  the node.  \begin{itemize} \item \gls{define} decision variable
+  $[\lo{GL^G_{m,t}}, \hi{GL^G_{m,t}}]$ for all gas-fired generator nodes
+  $m$ \atallt{}.  \item \gls{define} constant $0$ for all non-gas-generator
+  nodes $m$ \atallt{}.  \end{itemize}
+
+\item $D^{gas}_{m,t}$ average volumetric flow in \gls{unit:volume/t} of gas demand
+on node $m$ over \intervaloft{}. A positive sign indicates gas leaving the
+  node.  \begin{itemize} \item \gls{imported} constant for all gas nodes $m$
+  at \atallt{}.  \end{itemize}
+
+\item $\tau_{s,t}$ average volumetric flow of gas in \gls{unit:volume/t}
+at the sending end $s$ to power compressor-enabled pipeline $sr$
+  over \intervaloft{}. A positive sign indicates gas leaving the
+  node.  \begin{itemize} \item \gls{define}{} decision variable $[0, \infty)$
+  for all gas nodes $s$ connected to the source side of compressor-enabled
+  pipeline $sr$ \atallt{}.
+
+  \item \gls{define}{} constant $0$ for all gas nodes $s$ not connected to the
+    source side of a compressor-enabled pipeline $sr$ \atallt{}.  \end{itemize}
+
+
+\end{itemize}

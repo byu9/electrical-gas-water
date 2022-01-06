@@ -1,0 +1,28 @@
+\paragraph{For All Battery Buses}
+\begin{itemize}
+
+\item $\hi{S^{ES}_i}$ energy storage discharge apparent power limit of bus $i$
+  in \gls{unit:s} \begin{itemize} \item \gls{imported} constant for all battery
+  buses $i$ \end{itemize}
+
+\item $r^{Batt}_i, r^{Cvt}_i$ battery charger and inverter efficiency of bus $i$
+  in \gls{unit:1} \begin{itemize} \item \gls{imported} constant for all battery
+  buses $i$ \end{itemize}
+
+\item $L^{ES}_{i,t}$ average real power loss in battery storage in \gls{unit:p}
+      for bus $i$ over \intervaloft{}.
+
+\begin{itemize} \item \gls{define} decision variable $[0, \infty)$ for all
+  battery buses $i$ \atallt{}.  \end{itemize}
+
+\item $E^{ES}_{i,t}$ battery storage state-of-charge in \gls{unit:energy}
+for bus $i$ at time $t$
+
+\begin{itemize} \item \gls{define} decision variable
+  $[\lo{E^{ES}_i}, \hi{E^{ES}_i}]$ for all battery buses $i$ \atallt{}.
+
+\item \gls{imported} constant as initial
+  state-of-charge for all battery buses $i$ at the extended initial
+  timepoint.  \end{itemize}
+
+\end{itemize}

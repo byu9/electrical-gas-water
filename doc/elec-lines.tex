@@ -1,0 +1,23 @@
+\paragraph{For All Electrical Lines}
+\begin{itemize}
+
+\item $r_{ij}, x_{ij}, z_{ij}$ resistance, reactance, and impedance magnitude
+  of line $ij$ in \gls{unit:z}.  \begin{itemize} \item \gls{imported} constant
+  for all directed edges $ij$.  \end{itemize}
+
+\item $\hi{S_{ij}}$ apparent power limit in gls{unit:s} of line $ij$
+  \begin{itemize} \item \gls{imported} constant for all directed edges
+  $ij$.  \end{itemize}
+
+\item $P_{ij,t}, Q_{ij,t}$ average real and reactive power on line $ij$ in
+\gls{unit:p} and \gls{unit:q}, measured at the $i$ end, over \intervaloft{}.
+A positive sign represents power flowing to child
+  $j$.  \begin{itemize} \item \gls{define} decision variable $(-\infty, \infty)$
+  for all directed edges $ij$ \atallt{}.  \end{itemize}
+
+\item $l_{ij,t}$ squared average current on line $ij$ in \gls{unit:isq} over
+\intervaloft{}.
+  \begin{itemize} \item \gls{define} decision variable $[0, \hi{l_{ij}}]$ for
+  all directed edges $ij$ \atallt{}.  \end{itemize}
+
+\end{itemize}

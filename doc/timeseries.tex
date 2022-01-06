@@ -1,0 +1,17 @@
+\section{Scheduling Horizon}
+
+\paragraph{Scheduling Interval}
+The scheduling interval shall be 1 \gls{unit:t}.
+
+\paragraph{Scheduling Horizon}
+The scheduling horizon shall contain an incremental time series of zero to an
+arbitrary number of timepoints with a uniform sampling period equal to the
+scheduling interval. The first timepoint in the scheduling horizon is the
+\emph{initial timepoint}. Initial conditions given as constants implicitly apply
+to the scheduling interval ending at the initial timepoint.
+
+\paragraph{Extended Scheduling Horizon}
+The extended scheduling horizon shall include the scheduling interval ending
+with the initial timepoint, whose beginning is hereby referred to as the
+\emph{extended initial timepoint}. The extended initial timepoint indexes the
+value of the initial condition of a symbol set.

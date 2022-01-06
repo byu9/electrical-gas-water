@@ -1,0 +1,16 @@
+\section{Topology Requirements}
+The electrical and gas topology shall be modeled as directed graphs with nodes
+representing buses or gas nodes, and edges representing electrical connections
+or gas pipelines. Whenever applicable, the positivity of a numeric quantity
+shall be logically associated with the direction of an edge.
+
+\begin{enumerate}
+\item Buses in the electrical topology shall have approximately equal
+  voltages. If there are transformer zones, they shall be normalized to the same
+  voltage level.
+
+\item Despite the presence of compressor stations to compensate for friction
+  losses over pipelines, gas nodes shall have approximately equal pressure
+  levels and temperatures to ignore the effect of compression on volumetric flow
+  and heat content.
+\end{enumerate}

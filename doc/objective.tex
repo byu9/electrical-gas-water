@@ -1,0 +1,47 @@
+\section{Minimize}
+Minimize the total cost of purchased wholesale electricity, operation of coal-
+and gas-fired generators, and purchased wholesale natural gas over the
+scheduling horizon.
+
+\begin{equation*}
+  \sum_{t \in \sT} \left[ \sum_{i \in \sI} C^{\text{e}}_i (P^{\text{G}}_{i,t},
+    t) + \sum_{m \in \sM} C^{\text{g}}_m (GL^S_{m,t}, t) \right]
+\end{equation*}
+
+
+\begin{itemize}
+\item $\sT$ \gls{imported} the scheduling horizon.
+
+\item $\sI$ \gls{imported} set of coal- and gas-fired generator buses and grid
+  connection points (programed as generators).
+
+\item $\sM$ \gls{imported} set of gas supply nodes.
+
+\item $C^e_i(P, t)$ \gls{imported} for all non-renewable electricity production
+  facilities $i$, the average cost in \gls{unit:cost/t} over \intervaloft{} to
+  operate facility $i$ at output level $P$ \gls{unit:p}.
+  \begin{itemize}
+
+  \item For coal-fired generator $i$, $C^e_i(P) = a_i + b_iP + c_iP^2$ where
+    $a_i, b_i, c_i$ are given based on \gls{unit:p}. The function shall model
+    the fuel- and non-fuel related costs.
+
+  \item For grid connection point $i$, $C^e_i(P, t) = \pi_{i,t}P$, where
+    $\pi_{i,t}$ is the average locational marginal price of electricity given in
+    \gls{unit:cost/energy} over \intervaloft{}.
+
+  \item For gas-fired generator $i$, $C^e_i(P, t) = 0$. The function shall only
+    model the non-fuel-related costs.
+  \end{itemize}
+
+\item $G^g_m(G, t)$ \gls{imported} for all gas supply nodes $m$, the average
+  cost in \gls{unit:cost/t} over \intervaloft{} to operate node $m$ at output
+  level $G$ \gls{unit:volume/t}.
+  \begin{itemize}
+  \item For gas supply node $m$, $C_m^g(G, t) = \pi_{m,t} G$, where $\pi_{m,t}$
+    is the average locational marginal price of natural gas given in
+    \gls{unit:cost/volume} over the scheduling interval ending with $t$.
+  \end{itemize}
+
+
+\end{itemize}
