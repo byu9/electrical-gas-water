@@ -21,14 +21,13 @@
 \begin{itemize}
 \item Xiaochu
   \begin{itemize}
-  \item To update \this to reflect the mathematical formulation of the problem
-    as he sees fit
   \item To review changes to the source code and ensure the state of coherency
     between the source code and \this
   \item To resolve questions and ambiguities discovered by the implementer
   \end{itemize}
 \item John
   \begin{itemize}
+  \item To update \this to reflect the mathematical formulation of the problem
   \item To implement \this as a Python program and maintain symbol-identifier
     resemblance wherever possible, and to maintain the program to reflect any
     changes in \this
@@ -37,6 +36,17 @@
     attention of the modeler
   \end{itemize}
 \end{itemize}
+
+
+
+\section{Topology Requirements}
+\begin{enumerate}
+\item Buses in the electrical topology shall have approximately equal
+  voltages. If there are transformer zones, they shall be normalized to the same
+  voltage level.
+\item Nodes in the gas topology shall have approximately equal pressure levels
+  to ignore the effect of compression on volumetric flow and heat content.
+\end{enumerate}
 
 
 
@@ -69,7 +79,8 @@ Symbols are defined in later sections.
 
 \section{Symbols (Electrical)}
 \begin{itemize}
-\item $P_{ij,t}$ real power of electrical line along direction to child
+\item $P_{ij,t}$ real power of electrical line along direction to child measured
+  at parent end
   \begin{itemize}
     \item in watts
     \item \define decision variable $(-\infty, \infty)$ for all directed edges
@@ -77,45 +88,77 @@ Symbols are defined in later sections.
   \end{itemize}
 
 \item $Q_{ij,t}$ reactive power of electrical line along direction to child
+  measured at parent end
   \begin{itemize}
     \item in vars
     \item \define decision variable $(-\infty, \infty)$ for all directed edges
       $ij$ at all time points $t$
   \end{itemize}
 
-\item $P^G_{i,t}$ non-renewable real power generation
+\item $P^G_{i,t}$ non-renewable real power supply into bus
   \begin{itemize}
     \item in watts
-    \item \define decision variable $[\lo{P^G_i}, \hi{P^G_i}]$ for all
-      non-renewable generator buses and/or grid connection buses $i$ at all time
-      points $t$
-    \item \define constant $0$ for all non-generator non-grid-connection buses
-      $i$ at all time points $t$
+    \item \define decision variable $[\lo{P^G_i}, \hi{P^G_i}]$ for all buses $i$
+      connected to the bulk electric system at all time points $t$
+    \item \define decision variable $[\lo{P^G_i}, \hi{P^G_i}]$ for all buses $i$
+      connected to a coal generator at all time points $t$
+    \item \define derived variable for all buses $i$ connected to a gas
+      generator mapped to gas node $m$ at all time points $t$
+      \begin{equation*}
+        P^G_{i,t} = \eta^{G2P} GL^G_{m,t} \text{HHV}_{\text{SNG}}
+      \end{equation*}
+    \item \define constant $0$ for all other buses $i$ at all time points $t$
   \end{itemize}
 
-\item $\lo{P^G_i}, \hi{P^G_i}$ non-renewable real power generation limits
+\item $\lo{P^G_i}, \hi{P^G_i}$ non-renewable-non-gas real power supply limits
   \begin{itemize}
   \item in watts
-  \item \imported constant for all non-renewable generator buses and/or grid
-    connection points
+  \item \imported constant for all buses $i$ connected to the bulk electric
+    system at all time points $t$
+  \item \imported constant for all buses $i$ connected to a coal generator at
+    all time points $t$
   \end{itemize}
 
-\item $Q^G_{i,t}$ non-renewable reactive power generation
+\item $\eta^{G2P}$ gas generator efficiency
   \begin{itemize}
-    \item in vars
-    \item \define decision variable $[\lo{Q^G_i}, \hi{Q^G_i}]$ for all
-      non-renewable generator buses and/or grid connection buses $i$ at all time
-      points $t$
-    \item \define constant $0$ for all non-generator non-grid-connection buses
-      $i$ at all time points $t$
+  \item unitless
+  \item \imported constant
   \end{itemize}
 
+\item $\text{HHV}_\text{SNG}$ heat value of natural gas under the rated pressure
+  and temperature of the gas topology
+  \begin{itemize}
+  \item in watt-hours-per-thousand-cubic-feet (Wh/MCF)
+  \item \imported constant
+  \end{itemize}
 
-\item $\lo{Q^G_i}, \hi{Q^G_i}$ non-renewable reactive power generation limits
+\item $Q^G_{i,t}$ non-renewable reactive power supply into bus
   \begin{itemize}
   \item in vars
-  \item \imported constant for all non-renewable generator buses and/or grid
-    connection points
+
+  \item \define decision variable $[\lo{Q^G_i}, \hi{Q^G_i}]$ for all buses $i$
+    connected to the bulk electric system at all time points $t$
+
+  \item \define decision variable $[\lo{Q^G_i}, \hi{Q^G_i}]$ for all buses $i$
+    connected to a coal generator at all time points $t$
+
+  \item \define decision variable $[\lo{Q^G_i}, \hi{Q^G_i}]$ for all buses $i$
+    connected to a gas generator at all time points $t$
+
+  \item \define constant $0$ for all other buses $i$ at all time points $t$
+
+  \end{itemize}
+
+
+\item $\lo{Q^G_i}, \hi{Q^G_i}$ non-renewable reactive power supply limits
+  \begin{itemize}
+  \item in vars
+  \item \imported constant for all buses $i$ connected to the bulk electric
+    system at all time points $t$
+  \item \imported constant for all buses $i$ connected to a coal generator at
+    all time points $t$
+  \item \imported constant for all buses $i$ connected to a gas generator at all
+    time points $t$
   \end{itemize}
 
 \item $P^R_{i,t}$ renewable real power generation
@@ -162,16 +205,25 @@ Symbols are defined in later sections.
 \item $PT_{i,t}$ power-to-gas real power consumption
   \begin{itemize}
   \item in watts
-  \item \define decision variable $[0, \infty)$ for all P2G buses $i$ at all
-    time points $t$
+  \item \define derived variable for all P2G buses $i$ mapped to gas node $m$ at
+    all time points $t$
+    \begin{equation*}
+      GT_{m,t} = \eta^{P2G}PT_{i,t}/\text{HHV}_\text{SNG}
+    \end{equation*}
   \item \define constant $0$ for all non-P2G buses $i$ at all time points $t$
+  \end{itemize}
+
+\item $\eta^{P2G}$ power-to-gas conversion efficiency
+  \begin{itemize}
+  \item unitless
+  \item \imported constant
   \end{itemize}
 
 \item $QT_{i,t}$ power-to-gas reactive power consumption
   \begin{itemize}
   \item in vars
-  \item \define decision variable $[0, \infty)$ for all P2G buses $i$ at all
-    time points $t$
+  \item \define decision variable $(-\infty, \infty)$ for all P2G buses $i$ at
+    all time points $t$
   \item \define constant $0$ for all non-P2G buses $i$ at all time points $t$
   \end{itemize}
 
@@ -384,7 +436,7 @@ For all battery buses $i$ at all time points $t$
 For all battery buses $i$ at all time points $t$ excluding the initial time
 point
 \begin{equation}
-  E^{ES}_{i,t} = E^{ES}_{i,\text{prev}(t)} - P^{ES}_{i,t} - L^{ES}_{i,t}
+  E^{ES}_{i,t} = E^{ES}_{i,t-1} - P^{ES}_{i,t} - L^{ES}_{i,t}
 \end{equation}
 
 
@@ -424,16 +476,16 @@ point
   \item \imported constant for all directed edges $sr$
   \end{itemize}
 
-\item $\Pi_{m,t}$ gas node pressure
+\item $\Pi_{m,t}$ gas node squared pressure
   \begin{itemize}
-  \item in pounds-per-square-inch (PSI)
+  \item in squared [pounds-per-square-inch] ($\text{[PSI]}^2$)
   \item \define decision variable $[\lo{\Pi_m}, \hi{\Pi_m}]$ for all gas nodes
     $m$
   \end{itemize}
 
 \item $\lo{\Pi_m}, \hi{\Pi_m}$ gas node squared pressure limits
   \begin{itemize}
-  \item in pounds-per-square-inch (PSI)
+  \item in squared [pounds-per-square-inch] ($\text{[PSI]}^2$)
   \item \imported constants for all gas nodes $m$
   \end{itemize}
 
@@ -449,7 +501,7 @@ point
   t]$
   \begin{itemize}
   \item in thousand-cubic-feet-per-hour (MCF/h)
-  \item \define decision variable $[0, \hi{GL^{dis}_m})$ for all gas storage
+  \item \define decision variable $[0, \hi{GL^{dis}_m}]$ for all gas storage
     nodes $m$ at all time points $t$ excluding the initial time point
   \item \define constant $0$ for all gas storage nodes $m$ at the initial time
     point $t$
@@ -467,7 +519,7 @@ point
   t]$
   \begin{itemize}
   \item in thousand-cubic-feet-per-hour (MCF/h)
-  \item \define decision variable $[0, \hi{GL^{ch}_m})$ for all gas storage
+  \item \define decision variable $[0, \hi{GL^{ch}_m}]$ for all gas storage
     nodes $m$ at all time points $t$ excluding the initial time point
   \item \define constant $0$ for all gas storage nodes $m$ at the initial time
     point $t$
@@ -502,19 +554,21 @@ point
   \item \imported constant for all gas storage nodes $m$
   \end{itemize}
 
-\item $\eta$ gas storage efficiency
+\item $\eta^G$ gas storage efficiency
   \begin{itemize}
   \item unitless
   \item \imported constant.
   \end{itemize}
 
-\item $\tau_{m,t}$ gas comsumption by compressor
+\item $\tau_{s,t}$ gas comsumption by compressor-enabled pipeline at the sending
+  end
   \begin{itemize}
   \item in thousand-cubic-feet-per-hour (MCF/h)
-  \item \define decision variable $[0, \infty)$ for all gas storage nodes $m$ at
-    all time points $t$
-  \item \define constant $0$ for all non-gas-storage nodes $m$ at all time
-    points $t$
+  \item \define decision variable $[0, \infty)$ for all gas nodes $s$ connected
+    to the source side of compressor-enabled pipeline $sr$ at all time points
+    $t$
+  \item \define constant $0$ for all gas nodes $s$ not connected to the source
+    side of a compressor-enabled pipeline $sr$
   \end{itemize}
 
 \item $GL^G_{m,t}$ gas comsumption by gas-fired generator
@@ -535,7 +589,8 @@ point
 
 \section{Functions (Gas)}
 \begin{itemize}
-\item $\Phi_{sr}(\Pi_s, \Pi_r)$ gas volumetric flow function
+\item $\Phi_{sr}(\Pi_s, \Pi_r)$ volumetric flow function for
+  non-compressor-enabled pipelines
   \begin{itemize}
   \item $\Pi_s, \Pi_r$ in $\text{[pounds-per-square-inch]}^2 (\text{[PSI]}^2)$
   \item return value in thousand-cubic-feet-per-hour (MCF/h)
@@ -558,23 +613,44 @@ point
 
 
 \section{Constraints (Gas)}
-For all directed edges $sr$ at all time points $t$
+For all gas nodes $m$ at all time points $t$
+
+\begin{equation}
+  GL^S_{m,t} +
+  GT_{m,t} + \sum_{s\in \sA_m}{GL_{sm,t}} - \sum_{r\in \sC_m}{GL_{mr,t}}
+  + GL^{dis}_{m,t} - GL^{ch}_{m,t} =  \tau_{m,t} + D^{gas}_{m,t} + GL^G_{m,t}
+\end{equation}
+
+For all gas storage nodes $m$ at all time points $t$ excluding the initial time
+point
+\begin{equation}
+  SOC_{m,t} = SOC_{m,t-1} + \eta^G GL^{ch}_{m,t} - \frac{1}{\eta^G} GL^{dis}_{m,t}
+\end{equation}
+
+For all non-compressor-enabled pipelines $sr$ at all time points $t$
 \begin{equation}
   GL_{sr,t} = \Phi_{sr}(\Pi_{s,t} - \Pi_{r,t})
 \end{equation}
 
-For all gas nodes $m$ at all time points $t$
+For all compressor-enabled pipelines $sr$ at all time points $t$
 \begin{equation}
-  GL^S_{m,t} + GT_{m,t} - \sum_{s\in \sA_m}{GL_{sm,t}} + \sum_{r\in \sC_m}{GL_{mr,t}}
-  + GL^{dis}_{m,t} - GL^{ch}_{m,t} =
-  \tau_{m,t} + D^{gas}_{m,t} + GL^G_{m,t}
+  \Pi_{s,t} \leq \Pi_{r,t}
 \end{equation}
 
-For all gas nodes $m$ at all time points $t$ excluding the initial time point
 \begin{equation}
-  SOC_{m,t} = SOC_{m,\text{prev}(t)} + \eta GL^{ch}_{m,t} - \frac{1}{\eta} GL^{dis}_{m,t}
+  \tau_{s,t} =
+  \sigma_1 GL^C_{sr,t} + \sigma_2 \Pi_{r,t} + \sigma_3 \Pi_{s,t} + \sigma_4
 \end{equation}
+$\sigma_1, \sigma_2, \sigma_3, \sigma_4$ are given constants.
 
 
+\section{Symbols (Water)}
+TBD.
+
+\section{Constraints (Water)}
+TBD.
+
+\newpage
+Intentionally left empty.
 
 \end{document}
