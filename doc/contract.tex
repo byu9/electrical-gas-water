@@ -1,0 +1,580 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{xcolor}
+
+\newcommand{\lo}[1]{\underline{#1}}
+\newcommand{\hi}[1]{\overline{#1}}
+\newcommand{\define}{\textcolor{blue}{\textbf{[define as] }}}
+\newcommand{\imported}{\textcolor{purple}{\textbf{[imported] }}}
+\newcommand{\this}{\emph{This Contract }}
+
+\def\sT{\mathcal T}
+\def\sM{\mathcal M}
+\def\sI{\mathcal I}
+\def\sC{\mathcal C}
+\def\sA{\mathcal A}
+
+\begin{document}
+
+\section{Work Breakdown Structure}
+\begin{itemize}
+\item Xiaochu
+  \begin{itemize}
+  \item To update \this to reflect the mathematical formulation of the problem
+    as he sees fit
+  \item To review changes to the source code and ensure the state of coherency
+    between the source code and \this
+  \item To resolve questions and ambiguities discovered by the implementer
+  \end{itemize}
+\item John
+  \begin{itemize}
+  \item To implement \this as a Python program and maintain symbol-identifier
+    resemblance wherever possible, and to maintain the program to reflect any
+    changes in \this
+  \item To update the program upon the proposal of a reviewer
+  \item To raise any ambiguities and potential problems of \this to the
+    attention of the modeler
+  \end{itemize}
+\end{itemize}
+
+
+
+\section{Minimize}
+Symbols are defined in later sections.
+
+\begin{equation*}
+  \sum_{t \in \sT} \left[ \sum_{i \in \sI} C^{\text{p}}_i (P^{\text{G}}_{i,t}) +
+    \sum_{m \in \sM} C^{\text{g}}_m (GL^S_{m,t}, t) \right]
+\end{equation*}
+\begin{itemize}
+\item $\sT$ \imported set of all time points in the scheduling horizon
+\item $\sI$ \imported set of coal generator buses and grid connection points
+\item $\sM$ \imported set of gas supply nodes
+\end{itemize}
+
+
+
+
+\section{Symbols (Time Series)}
+\begin{itemize}
+\item $\sT$ scheduling horizon
+  \begin{itemize}
+  \item \imported incremental time series containing at least 2 time points with
+    a uniform sampling period of 1 hour
+  \end{itemize}
+\end{itemize}
+
+
+
+\section{Symbols (Electrical)}
+\begin{itemize}
+\item $P_{ij,t}$ real power of electrical line along direction to child
+  \begin{itemize}
+    \item in watts
+    \item \define decision variable $(-\infty, \infty)$ for all directed edges
+      $ij$ at all time points $t$
+  \end{itemize}
+
+\item $Q_{ij,t}$ reactive power of electrical line along direction to child
+  \begin{itemize}
+    \item in vars
+    \item \define decision variable $(-\infty, \infty)$ for all directed edges
+      $ij$ at all time points $t$
+  \end{itemize}
+
+\item $P^G_{i,t}$ non-renewable real power generation
+  \begin{itemize}
+    \item in watts
+    \item \define decision variable $[\lo{P^G_i}, \hi{P^G_i}]$ for all
+      non-renewable generator buses and/or grid connection buses $i$ at all time
+      points $t$
+    \item \define constant $0$ for all non-generator non-grid-connection buses
+      $i$ at all time points $t$
+  \end{itemize}
+
+\item $\lo{P^G_i}, \hi{P^G_i}$ non-renewable real power generation limits
+  \begin{itemize}
+  \item in watts
+  \item \imported constant for all non-renewable generator buses and/or grid
+    connection points
+  \end{itemize}
+
+\item $Q^G_{i,t}$ non-renewable reactive power generation
+  \begin{itemize}
+    \item in vars
+    \item \define decision variable $[\lo{Q^G_i}, \hi{Q^G_i}]$ for all
+      non-renewable generator buses and/or grid connection buses $i$ at all time
+      points $t$
+    \item \define constant $0$ for all non-generator non-grid-connection buses
+      $i$ at all time points $t$
+  \end{itemize}
+
+
+\item $\lo{Q^G_i}, \hi{Q^G_i}$ non-renewable reactive power generation limits
+  \begin{itemize}
+  \item in vars
+  \item \imported constant for all non-renewable generator buses and/or grid
+    connection points
+  \end{itemize}
+
+\item $P^R_{i,t}$ renewable real power generation
+  \begin{itemize}
+  \item in watts
+  \item \imported constant for all renewable buses $i$ at all time points $t$
+  \item \define constant $0$ for all non-renewable buses $i$ at all time points
+    $t$
+  \end{itemize}
+
+\item $Q^R_{i,t}$ renewable reactive power generation
+  \begin{itemize}
+  \item in vars
+  \item \imported constant for all renewable buses $i$ at all time points $t$
+  \item \define constant $0$ for all non-renewable buses $i$ at all time points
+    $t$
+  \end{itemize}
+
+\item $P^{ES}_{i,t}$ average energy storage discharge real power for time period
+  ($t-1$, $t$]
+  \begin{itemize}
+  \item in watts
+  \item \define decision variable $(-\infty, \infty)$ for all battery buses $i$
+    at all time points $t$ excluding the initial time point
+  \item \define constant $0$ for all battery buses $i$ at the initial time point
+    $t$
+  \item \define constant $0$ for all non-battery buses $i$ at all time points
+    $t$
+  \end{itemize}
+
+\item $Q^{ES}_{i,t}$ average energy storage discharge reactive power for time
+  period ($t-1$, $t$]
+  \begin{itemize}
+  \item in vars
+  \item \define decision variable $(-\infty, \infty)$ for all battery buses $i$
+    at all time points $t$ excluding the initial time point
+  \item \define constant $0$ for all battery buses $i$ at the initial time point
+    $t$
+  \item \define constant $0$ for all non-battery buses $i$ at all time points
+    $t$
+  \end{itemize}
+
+
+\item $PT_{i,t}$ power-to-gas real power consumption
+  \begin{itemize}
+  \item in watts
+  \item \define decision variable $[0, \infty)$ for all P2G buses $i$ at all
+    time points $t$
+  \item \define constant $0$ for all non-P2G buses $i$ at all time points $t$
+  \end{itemize}
+
+\item $QT_{i,t}$ power-to-gas reactive power consumption
+  \begin{itemize}
+  \item in vars
+  \item \define decision variable $[0, \infty)$ for all P2G buses $i$ at all
+    time points $t$
+  \item \define constant $0$ for all non-P2G buses $i$ at all time points $t$
+  \end{itemize}
+
+\item $P^L_{i,t}$ load real power consumption
+  \begin{itemize}
+  \item in watts
+  \item \imported constant for all buses $i$ at all time points $t$
+  \end{itemize}
+
+\item $Q^L_{i,t}$ load reactive power consumption
+  \begin{itemize}
+  \item in vars
+  \item \imported constant for all buses $i$ at all time points $t$
+  \end{itemize}
+
+  \item $P^P_{i,t}$ water pump real power consumption
+  \begin{itemize}
+  \item in watts
+  \item \define decision variable $[0, \infty)$ for all water pump buses $i$ at
+    all time points $t$
+  \item \define constant $0$ for all non-water-pump buses $i$ at all time points
+    $t$
+  \end{itemize}
+
+\item $Q^P_{i,t}$ water pump reactive power consumption
+  \begin{itemize}
+  \item in vars
+  \item \define decision variable $[0, \infty)$ for all water pump buses $i$ at
+    all time points $t$
+  \item \define constant $0$ for all non-water-pump buses $i$ at all time points
+    $t$
+  \end{itemize}
+
+\item $v_{i,t}$ squared bus voltage
+  \begin{itemize}
+  \item in volts-squared
+  \item \define decision variable $[\lo{v_i}, \hi{v_i}]$ for all buses $i$ at
+    all time points $t$
+  \end{itemize}
+
+\item $\lo{v_{i}}, \hi{v_{i}}$ squared bus voltage limits
+  \begin{itemize}
+  \item in volts-squared
+  \item \imported constant for all buses $i$
+  \end{itemize}
+
+\item $l_{ij,t}$ squared line current
+  \begin{itemize}
+  \item in amps-squared
+  \item \define decision variable $[0, \hi{l_{ij}}]$ for all directed edges $ij$
+    at all time points $t$
+  \end{itemize}
+
+\item $\hi{l_{ij}}$ squared line current limits
+  \begin{itemize}
+  \item in amps-squared
+  \item \imported constant for all directed edges $ij$
+  \end{itemize}
+
+\item $r_{ij}$ line resistance
+  \begin{itemize}
+  \item in ohms
+  \item \imported constant for all directed edges $ij$
+  \end{itemize}
+
+\item $x_{ij}$ line reactance
+  \begin{itemize}
+  \item in ohms
+  \item \imported constant for all directed edges $ij$
+  \end{itemize}
+
+\item $z_{ij}$ line impedance magnitude
+  \begin{itemize}
+  \item in ohms
+  \item \imported constant $z_{ij} = \sqrt{r^2_{ij} + x^2_{ij}}$ for all
+    directed edges $ij$
+  \end{itemize}
+
+\item $\hi{S_{ij}}$ line apparent power limit
+  \begin{itemize}
+  \item in volt-amps
+  \item \imported constant for all directed edges $ij$
+  \end{itemize}
+
+\item $r^{Batt}_i$ battery charger efficiency
+  \begin{itemize}
+  \item unitless
+  \item \imported constant for all battery buses $i$
+  \end{itemize}
+
+\item $r^{Cvt}_i$ battery inverter efficiency
+  \begin{itemize}
+  \item unitless
+  \item \imported constant for all battery buses $i$
+  \end{itemize}
+
+\item $L^{ES}_{i,t}$ active power loss of battery storage
+  \begin{itemize}
+  \item in volt-amps
+  \item \define decision variable $[0, \infty)$ for all battery buses $i$ at all
+    time points $t$
+  \end{itemize}
+
+\item $E^{ES}_{i,t}$ battery state of charge
+  \begin{itemize}
+  \item in watt-hours
+  \item \define constant $E0^{ES}_i$ for all buses $i$ at the initial time point
+    $t$
+  \item \define decision variable $[\lo{E^{ES}_i}, \hi{E^{ES}_i}]$ for all
+    battery buses $i$ at all time points $t$ excluding the initial time point
+  \end{itemize}
+
+\item $E0^{ES}_i$ battery initial state of charge
+  \begin{itemize}
+  \item in watt-hours
+  \item \imported constant for all battery buses $i$
+  \end{itemize}
+
+\item $\lo{E^{ES}_i}, \hi{E^{ES}_i}$ battery state of charge limits
+  \begin{itemize}
+  \item in watt-hours
+  \item \imported constant for all battery buses $i$
+  \end{itemize}
+
+\item $\hi{S^{ES}_i}$ battery apparent power limit
+  \begin{itemize}
+  \item in volt-amps
+  \item \imported constant for all battery buses $i$
+  \end{itemize}
+
+\end{itemize}
+
+
+\section{Functions (Electrical)}
+\begin{itemize}
+\item $C^p_i(P)$ electricity cost function
+  \begin{itemize}
+  \item $P$ in watts
+  \item return value in USD-per-hour
+
+  \item \imported
+    $C^p_i(P) = a_i + b_i\frac{P}{10^6} + c_i\left(\frac{P}{10^6}\right)^2$
+    for all coal generator buses $i$
+    \begin{itemize}
+    \item $a_i, b_i, c_i$ in $\frac{\text{USD}}{\text{h}}$,
+      $\frac{\text{USD}}{\text{MWh}}$, $\frac{\text{USD}}{\text{(MW)$^2$h}}$
+    \end{itemize}
+
+  \item \imported $C^p_i(P) = \pi_i\frac{P}{10^6}$ for all grid connections $i$
+    \begin{itemize}
+    \item $\pi_i$ in $\frac{\text{USD}}{\text{MWh}}$
+    \end{itemize}
+  \end{itemize}
+\end{itemize}
+
+
+
+\section{Constraints (Electrical)}
+For all buses $i$ at all time points $t$
+\begin{equation}
+  \sum_{j \in \sC_i} P_{ij,t} - \sum_{k \in \sA_i} (P_{ki,t} - r_{ki} l_{ki,t}) =
+  P^G_{i,t} + P^R_{i,t} + P^{ES}_{i,t} - PT_{i,t} - P^L_{i,t} - P^P_{i,t}
+\end{equation}
+
+\begin{equation}
+  \sum_{j \in \sC_i} Q_{ij,t} - \sum_{k \in \sA_i} (Q_{ki,t} - x_{ki} l_{ki,t}) =
+  Q^G_{i,t} + Q^R_{i,t} + Q^{ES}_{i,t} - QT_{i,t} - Q^L_{i,t} - Q^P_{i,t}
+\end{equation}
+
+
+For all buses $i$ and direct children $j \in \sC_i$ at all time points $t$
+\begin{equation}
+  v_{i,t} - v_{j,t} = 2r_{ij}P_{ij,t} + 2x_{ij}Q_{ij,t} - z^2_{ij}l_{ij,t}
+\end{equation}
+
+\begin{equation}
+  P^2_{ij,t} + Q^2_{ij,t} \leq v_{i,t} l_{ij,t}
+\end{equation}
+
+\begin{equation}
+  \hi{S_{ij}}^2v_i + \lo{v_i}\hi{v_i}l_{ij,t} \leq
+  \hi{S_{ij}}^2 (\lo{v_i} + \hi{v_i})
+\end{equation}
+
+For all directed edges $ij$ at all time points $t$
+\begin{equation}
+  P^2_{ij,t} + Q^2_{ij,t} \leq \hi{S^2_{ij}}
+\end{equation}
+
+For all battery buses $i$ at all time points $t$
+\begin{equation}
+  (r^{Batt}_i + r^{Cvt}_i)(P^{ES}_{i,t})^2 + r^{Cvt}_i (Q^{ES}_{i,t})^2 \leq
+  L^{ES}_{i,t}v_{i,t}
+\end{equation}
+
+\begin{equation}
+  r^{Batt}_i (Q^{ES}_{i,t})^2 + \lo{v_i} L^{ES}_{i,t} \leq
+  (\hi{S^{ES}_i})^2(r^{Batt}_i + r^{Cvt}_i)
+\end{equation}
+
+\begin{equation}
+  (\hi{S^{ES}_i})^2v_i + \lo{v_i}\hi{v_i}L^{ES}_{i,t} \leq
+  (\hi{S^{ES}_i})^2(\lo{v_i} + \hi{v_i})
+\end{equation}
+
+\begin{equation}
+  (P^{ES}_{i,t})^2 + (Q^{ES}_{i,t})^2 \leq (\hi{S^{ES}_{i,t}})^2
+\end{equation}
+
+For all battery buses $i$ at all time points $t$ excluding the initial time
+point
+\begin{equation}
+  E^{ES}_{i,t} = E^{ES}_{i,\text{prev}(t)} - P^{ES}_{i,t} - L^{ES}_{i,t}
+\end{equation}
+
+
+
+
+
+
+
+
+\section{Symbols (Gas)}
+\begin{itemize}
+\item $GL^S_{m,t}$ volumetric flow of gas supply node
+  \begin{itemize}
+  \item in thousand-cubic-feet-per-hour (MCF/h)
+  \item \define decision variable $[\lo{GL^S_m}, \hi{GL^S_m}]$ for all gas
+    supply nodes $m$ at all time points $t$
+  \item \define constant $0$ for all non-gas-supply-nodes $m$ at all time
+    points $t$
+  \end{itemize}
+
+\item $\lo{GL^S_m}, \hi{GL^S_m}$ gas supply node volumetric flow limit
+  \begin{itemize}
+  \item in thousand-cubic-feet-per-hour (MCF/h)
+  \item \imported constant for all gas supply nodes $m$
+  \end{itemize}
+
+\item $GL_{sr,t}$ gas line volumetric flow
+  \begin{itemize}
+  \item in thousand-cubic-feet-per-hour (MCF/h)
+  \item \define decision variable $[\lo{GL_{sr}}, \hi{GL_{sr}}]$ for all
+    directed edges $sr$ at all time points $t$
+  \end{itemize}
+
+\item $\lo{GL_{sr}}, \hi{GL_{sr}}$ gas line volumetric flow limits
+  \begin{itemize}
+  \item in thousand-cubic-feet-per-hour (MCF/h)
+  \item \imported constant for all directed edges $sr$
+  \end{itemize}
+
+\item $\Pi_{m,t}$ gas node pressure
+  \begin{itemize}
+  \item in pounds-per-square-inch (PSI)
+  \item \define decision variable $[\lo{\Pi_m}, \hi{\Pi_m}]$ for all gas nodes
+    $m$
+  \end{itemize}
+
+\item $\lo{\Pi_m}, \hi{\Pi_m}$ gas node squared pressure limits
+  \begin{itemize}
+  \item in pounds-per-square-inch (PSI)
+  \item \imported constants for all gas nodes $m$
+  \end{itemize}
+
+\item $GT_{m,t}$ gas output of power-to-gas
+  \begin{itemize}
+  \item in thousand-cubic-feet-per-hour (MCF/h)
+  \item \define decision variable $[0, \infty)$ for all P2G nodes $m$ at all
+    time points $t$
+  \item \define constant $0$ for all non-P2G nodes $m$ at all time points $t$
+  \end{itemize}
+
+\item $GL^{dis}_{m,t}$ average gas storage discharge flow for time period $(t-1,
+  t]$
+  \begin{itemize}
+  \item in thousand-cubic-feet-per-hour (MCF/h)
+  \item \define decision variable $[0, \hi{GL^{dis}_m})$ for all gas storage
+    nodes $m$ at all time points $t$ excluding the initial time point
+  \item \define constant $0$ for all gas storage nodes $m$ at the initial time
+    point $t$
+  \item \define constant $0$ for all non-gas-storage nodes $m$ at all time
+    points $t$
+  \end{itemize}
+
+\item $\hi{GL^{dis}_m}$ gas storage discharge flow limit
+  \begin{itemize}
+  \item in thousand-cubic-feet-per-hour (MCF/h)
+  \item \imported constant for all gas-storage nodes $m$
+  \end{itemize}
+
+\item $GL^{ch}_{m,t}$ average gas storage charging flow for time period $(t-1,
+  t]$
+  \begin{itemize}
+  \item in thousand-cubic-feet-per-hour (MCF/h)
+  \item \define decision variable $[0, \hi{GL^{ch}_m})$ for all gas storage
+    nodes $m$ at all time points $t$ excluding the initial time point
+  \item \define constant $0$ for all gas storage nodes $m$ at the initial time
+    point $t$
+  \item \define constant $0$ for all non-gas-storage nodes $m$ at all time
+    points $t$
+  \end{itemize}
+
+\item $\hi{GL^{ch}_m}$ gas storage charing flow limit
+  \begin{itemize}
+  \item in thousand-cubic-feet-per-hour (MCF/h)
+  \item \imported constant for all gas-storage nodes $m$
+  \end{itemize}
+
+\item $SOC_{m,t}$ gas storage state of charge
+  \begin{itemize}
+  \item in thousand-cubic-feet (MCF)
+  \item \define constant $SOC0_m$ for all gas storage nodes $m$ at first time
+    point $t$
+  \item \define decision variable $[\lo{SOC_m}, \hi{SOC_m}]$ for all gas storage
+    nodes $m$ at all time points $t$ excluding the initial time point
+  \end{itemize}
+
+\item $\lo{SOC_m}, \hi{SOC_m}$ gas storage state of charge limit
+  \begin{itemize}
+  \item in thousand-cubic-feet (MCF)
+  \item \imported constant for all gas storage nodes $m$
+  \end{itemize}
+
+\item $SOC0_m$ gas storage initial state of charge
+  \begin{itemize}
+  \item in thousand-cubic-feet (MCF)
+  \item \imported constant for all gas storage nodes $m$
+  \end{itemize}
+
+\item $\eta$ gas storage efficiency
+  \begin{itemize}
+  \item unitless
+  \item \imported constant.
+  \end{itemize}
+
+\item $\tau_{m,t}$ gas comsumption by compressor
+  \begin{itemize}
+  \item in thousand-cubic-feet-per-hour (MCF/h)
+  \item \define decision variable $[0, \infty)$ for all gas storage nodes $m$ at
+    all time points $t$
+  \item \define constant $0$ for all non-gas-storage nodes $m$ at all time
+    points $t$
+  \end{itemize}
+
+\item $GL^G_{m,t}$ gas comsumption by gas-fired generator
+  \begin{itemize}
+  \item in thousand-cubic-feet-per-hour (MCF/h)
+  \item \define decision variable $[0, \infty)$ for all gas generator nodes $m$
+    at all time points $t$
+  \item \define constant $0$ for all non-gas-generator nodes $m$ at all time
+    points $t$
+  \end{itemize}
+
+\item $D^{gas}_{m,t}$ gas comsumption by gas demand
+  \begin{itemize}
+  \item in thousand-cubic-feet-per-hour (MCF/h)
+  \item \imported constant for all gas nodes $m$ at all time points $t$
+  \end{itemize}
+\end{itemize}
+
+\section{Functions (Gas)}
+\begin{itemize}
+\item $\Phi_{sr}(\Pi_s, \Pi_r)$ gas volumetric flow function
+  \begin{itemize}
+  \item $\Pi_s, \Pi_r$ in $\text{[pounds-per-square-inch]}^2 (\text{[PSI]}^2)$
+  \item return value in thousand-cubic-feet-per-hour (MCF/h)
+  \item \imported linear or piecewise-linear for all directed edges $sr$
+  \end{itemize}
+
+\item $G^g_m(G, t)$ gas cost function
+  \begin{itemize}
+  \item $G$ in thousand-cubic-feet-per-hour (MCF/h)
+  \item $t$ as a time point in the scheduling horizon
+  \item return value in USD-per-hour
+  \item \imported $C_m^g(G, t) = \pi_{m,t} G$ for all gas supply nodes $m$
+    \begin{itemize}
+    \item $\pi_{m,t}$ in $\frac{\text{USD}}{\text{MCF}}$ for all gas suply nodes
+      $m$ and all time points $t$
+    \end{itemize}
+  \end{itemize}
+\end{itemize}
+
+
+
+\section{Constraints (Gas)}
+For all directed edges $sr$ at all time points $t$
+\begin{equation}
+  GL_{sr,t} = \Phi_{sr}(\Pi_{s,t} - \Pi_{r,t})
+\end{equation}
+
+For all gas nodes $m$ at all time points $t$
+\begin{equation}
+  GL^S_{m,t} + GT_{m,t} - \sum_{s\in \sA_m}{GL_{sm,t}} + \sum_{r\in \sC_m}{GL_{mr,t}}
+  + GL^{dis}_{m,t} - GL^{ch}_{m,t} =
+  \tau_{m,t} + D^{gas}_{m,t} + GL^G_{m,t}
+\end{equation}
+
+For all gas nodes $m$ at all time points $t$ excluding the initial time point
+\begin{equation}
+  SOC_{m,t} = SOC_{m,\text{prev}(t)} + \eta GL^{ch}_{m,t} - \frac{1}{\eta} GL^{dis}_{m,t}
+\end{equation}
+
+
+
+\end{document}
