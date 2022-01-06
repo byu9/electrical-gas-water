@@ -1,32 +1,28 @@
 #!/usr/bin/env python3
-
-battery_buses = {
+buses = {
     '684',
     '692',
 }
 
-battery_s_lims = {
+s_lims = {
     # bus: volt_amps
     '684': 1E6,
     '692': 1E6,
 }
 
-battery_charge_lims = {
+soc_lims = {
     # bus: (watt_hours_lo, watt_hours_hi)
     '684': (1, 10E6),
     '692': (1, 10E6),
 }
 
+soc_lims_lo = dict()
+soc_lims_hi = dict()
+for bus, (lo, hi) in soc_lims.items():
+    soc_lims_lo[bus] = lo
+    soc_lims_hi[bus] = hi
 
-battery_charge_lims_lo = dict()
-battery_charge_lims_hi = dict()
-
-for bus, (lo, hi) in battery_charge_lims.items():
-    battery_charge_lims_lo[bus] = lo
-    battery_charge_lims_hi[bus] = hi
-
-
-battery_initial_charge = {
+initial_soc = {
     # bus: watt_hours
     '684': 1,
     '692': 1,

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+from misc.directed_graph import DirectedGraph
 
 children = {
     # bus: {children, ...}
@@ -18,3 +19,7 @@ children = {
     # substation 650 as child of grid
     'Grid': {'650'},
 }
+
+graph = DirectedGraph(children.keys())
+for bus, children in children.items():
+    graph.add_children(bus, children)

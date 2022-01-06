@@ -1,10 +1,5 @@
 #!/usr/bin/env python3
-
-def feet_to_miles(feet):
-    FEET_PER_MILE = 5280
-    miles = feet / FEET_PER_MILE
-    return miles
-
+from misc.unit_conversions import feet_to_miles
 
 lines = {
     # (from_bus, to_bus): (line_type, miles)
@@ -117,20 +112,22 @@ s_lim_by_type = {
 #----------------------------------------------------------------------
 # Applies line type mapping
 #----------------------------------------------------------------------
-line_z = {
+z_complex = {
     line: z_per_mile_by_type[line_type] * miles
     for line, (line_type, miles) in lines.items()
 }
 
-line_r = {line: z.real for line, z in line_z.items()}
-line_x = {line: z.imag for line, z in line_z.items()}
+r = {line: z.real for line, z in z_complex.items()}
+x = {line: z.imag for line, z in z_complex.items()}
+z = {line: abs(z) for line, z in z_complex.items()}
 
-line_i_lims = {
-    line: i_lim_by_type[line_type]
+# squared current limits
+sq_i_lims = {
+    line: i_lim_by_type[line_type]**2
     for line, (line_type, _) in lines.items()
 }
 
-line_s_lims = {
+s_lims = {
     line: s_lim_by_type[line_type]
     for line, (line_type, _) in lines.items()
 }

@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-
-bus_v_lims = {
+v_lims = {
     # bus: (volts_lo, volts_hi)
     # Per Junkai, using 0.95~1.05
     '650': (0.95*4.16E3, 1.05*4.16E3),
@@ -20,11 +19,9 @@ bus_v_lims = {
     'Grid':(0.95*4.16E3, 1.05*4.16E3),
 }
 
-bus_v_lims_lo = dict()
-bus_v_lims_hi = dict()
-
-for bus, lims in bus_v_lims.items():
-    lo, hi = lims
-
-    bus_v_lims_lo[bus] = lo
-    bus_v_lims_hi[bus] = hi
+# squared voltage limits
+sq_v_lims_lo = dict()
+sq_v_lims_hi = dict()
+for bus, (lo, hi) in v_lims.items():
+    sq_v_lims_lo[bus] = lo**2
+    sq_v_lims_hi[bus] = hi**2
