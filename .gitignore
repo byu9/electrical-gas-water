@@ -1,6 +1,9 @@
 # Emacs backup files
 *~
 
+# documentation folder
+doc/
+
 # Notepad++ backup files
 *.bak
 
