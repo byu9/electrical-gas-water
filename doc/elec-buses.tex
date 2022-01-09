@@ -14,7 +14,12 @@ over \intervaloft{}
 \begin{itemize} \item \gls{define}
   decision variable $[\lo{P^G_i}, \hi{P^G_i}]$ and $[\lo{Q^G_i}, \hi{Q^G_i}]$
   for all buses $i$ connected to a non-renewable generator (including grid
-  connection points) \atallt{}.  \end{itemize}
+  connection points) \atallt{}.
+
+\item
+\gls{define} constant 0 for all buses $i$ not connected to a non-renewable
+generator or grid connection point \atallt{}.
+\end{itemize}
 
 \item $P^R_{i,t}, Q^R_{i,t}$ average renewable real and reactive power
   generation on bus $i$ in \gls{unit:p} and \gls{unit:q} over \intervaloft{}. A
