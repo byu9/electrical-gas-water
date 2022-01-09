@@ -588,3 +588,10 @@ model.setObjective(sum(
 
 model.optimize()
 model.display()
+
+
+print('{}\n# {}\n{}'.format('#'*70, 'Results', '#'*70))
+print('objective: {}'.format(model.getObjective().getValue()))
+
+for v in model.getVars():
+    print('{:<60}= {}'.format(v.VarName, v.X))
