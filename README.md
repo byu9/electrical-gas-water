@@ -2,6 +2,19 @@
 
 Online backup of source code for RISF Fall 2021 (Water-Energy Nexus).
 
+
+## Compiling the Contract
+
+Run `pdflatex` twice to fully compile the glossary.
+
+```
+cd ./doc
+pdflatex \\nonstopmode\\input contract.tex
+makeglossaries contract
+pdflatex \\nonstopmode\\input contract.tex
+```
+
+
 ## Units of Measure
 
 Note during discussion with Xiaochu, some constraints involving integrals with
@@ -16,18 +29,4 @@ one unit timestep in the equation. As a result:
    horizon is one hour apart, the unit of measure for the battery state of
    charge will also involve hours, for example, in watt-hours.
 
-| Quantity                     | Unit of Measure                      |
-|:-----------------------------|:------------------------------------:|
-| Time                         | Hour                                 |
-| Voltage                      | Volt                                 |
-| Current                      | Amp                                  |
-| Appparent Power              | Volt*Amp                             |
-| Real Power                   | Watt                                 |
-| Reactive Power               | Var                                  |
-| State of Charge (electrical) | Watt*Hour                            |
-| Efficiency                   | 1                                    |
-| Currency                     | USD                                  |
-| Impedance                    | Ohm                                  |
-| Admittance                   | Siemens                              |
-| Pressure                     | Pound Per Square Inch (PSI)          |
-| Matter Flow                  | Thousand Cubic Feet Per Hour (MCF/h) |
+See (Contract)[contract.tex] for units of measure
