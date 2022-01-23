@@ -9,3 +9,9 @@ For all power-to-gas buses $i$ mapped to gas node $m$ \atallt{}
 \begin{equation}
   GT_{m,t} =  \eta^{P2G} PT_{i,t} /\text{HHV}_\text{SNG}
 \end{equation}
+
+For all water-pump buses $i$ mapped to water pipeline $kn$ \atallt{}
+\begin{equation}
+  \eta^W_i P_{i,t} \geq a_{kn} f^2_{kn,t} + b_kn f_{kn,t}
+  \eta^W_i P_{i,t} \leq (a_{kn} \hi{f_{kn,t}} + b_{kn}) f_{kn,t}
+\end{equation}

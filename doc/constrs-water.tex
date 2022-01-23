@@ -1,0 +1,53 @@
+\section{Water Constraints}
+
+For all water nodes $k$ \atallt{}
+
+\begin{equation}
+  \sum_{s \in \sA_k} f_{sk,t} + f^G_{k,t} = \sum_{r \in \sC_k} f_{kr,t} +
+  f^T_{k,t} + d^W_{k,t}
+\end{equation}
+
+For all water pipelines $kn$ \atallt{}, and arbitrary positive real number $M$
+larger than all anticipated water pipeline flow
+\begin{equation}
+  f_{kn,t} \leq \alpha_{kn,t} \cdot M
+\end{equation}
+
+\begin{equation}
+  y_{k,t} - y_{n,t} + h_k - h_n + y^G_{kn,t}
+  \leq
+  (2\sqrt{2} - 2) R^P_{kn} \hi{f_{kn}} f_{kn,t} +
+  (3 - 2\sqrt{2}) R^P_{kn} \hi{f_{kn}}
+\end{equation}
+
+\begin{equation}
+  y_{k,t} - y_{n,t} + h_k - h_n + y^G_{kn,t}
+  \geq
+  (2\sqrt{2} - 2) R^P_{kn} \lo{f_{kn}} f_{kn,t} +
+  (3 - 2\sqrt{2}) R^P_{kn} \lo{f_{kn}}
+\end{equation}
+
+\begin{equation}
+  y_{k,t} - y_{n,t} + h_k - h_n + y^G_{kn,t}
+  \geq
+  2 R^P_{kn} \hi{f_{kn}} f_{kn,t} - R^P_{kn}\hi{f_{kn}}^2
+\end{equation}
+
+\begin{equation}
+  y_{k,t} - y_{n,t} + h_k - h_n + y^G_{kn,t}
+  \leq
+  2 R^P_{kn} \lo{f_{kn}} f_{kn,t} - R^P_{kn}\lo{f_{kn}}^2
+\end{equation}
+
+For all pump-enabled pipelines $kn$
+
+\begin{equation}
+  y^G_{kn,t} = \Phi^W_{kn}(f_{kn,t})
+\end{equation}
+
+For all water storage nodes $k$ at all timepoints $t$ in the extended scheduling
+horizon excluding the extended initial timepoint
+
+\begin{equation}
+  S^W_{k,t} = S^W_{k,t-1} + f^T_{k,t}
+\end{equation}

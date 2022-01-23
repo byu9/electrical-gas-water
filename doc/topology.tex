@@ -1,8 +1,8 @@
 \section{Topology Requirements}
-The electrical and gas topology shall be modeled as directed graphs with nodes
-representing buses or gas nodes, and edges representing electrical connections
-or gas pipelines. Whenever applicable, the positivity of a numeric quantity
-shall be logically associated with the direction of an edge.
+The electrical, gas, and water topology shall be modeled as directed graphs with
+nodes representing buses, gas, or water nodes, and edges representing electrical
+connections, gas, or water pipelines. Whenever applicable, the positivity of a
+numeric quantity shall be logically associated with the direction of an edge.
 
 \begin{enumerate}
 \item Buses in the electrical topology shall have approximately equal
@@ -13,4 +13,7 @@ shall be logically associated with the direction of an edge.
   losses over pipelines, gas nodes shall have approximately equal pressure
   levels and temperatures to ignore the effect of compression on volumetric flow
   and heat content.
+
+\item Water pumps shall create positive flow in the on state, and no flow in the
+  off state.
 \end{enumerate}

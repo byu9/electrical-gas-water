@@ -1,0 +1,48 @@
+\paragraph{For All Water Nodes}
+\begin{itemize}
+
+\item $y_{k,t}$ average water pressure at node $k$ in \gls{unit:water-pres}
+over \intervaloft{}.
+\begin{itemize}
+\item \gls{define} as decision variable $[\lo{y_k}, \hi{y_k}]$ for all water
+nodes $k$ \atallt{}.
+\end{itemize}
+
+\item $h_k$ elevation-induced gain (or loss) of water pressure
+in \gls{unit:water-pres} at node $k$ with respect to the reference elevation. A
+positive sign indicates gain of pressure due to a negative offset from the
+reference elevation.
+\begin{itemize}
+\item \gls{imported} constant for all water nodes $k$.
+\end{itemize}
+
+
+\item $f^G_{k,t}$ average volumetric supply flow at node $k$ in
+  \gls{unit:water-volume/t} over \intervaloft{}. A positive sign indicates water
+  entering the node.
+  \begin{itemize}
+  \item \gls{define} decision variable $[\lo{f^G_k}, \hi{f^G_k}]$ for all water
+    supply nodes $k$ \atallt{}.
+  \item \gls{define} constant $0$ for all non-water-supply nodes $k$ \atallt{}.
+  \end{itemize}
+
+\item $d^w_{k,t}$ average volumetric flow in \gls{unit:water-volume/t} of water
+  demand on node $k$ over \intervaloft{}. A positive sign indicates water
+  leaving the node.
+  \begin{itemize}
+  \item \gls{imported} constant for all water nodes $k$ \atallt{}.
+  \end{itemize}
+
+
+\item $f^T_{k,t}$ average volumetric flow in \gls{unit:water-volume/t} of water
+  storage charge on node $k$ over \intervaloft{}. A positive sign indicates
+  water leaving the node.
+
+  \begin{itemize}
+  \item \gls{define} decision variable $[\lo{f^T_k}, \hi{f^T_k}]$ for all water
+    storage nodes $k$ \atallt{}.
+
+  \item \gls{define} constant $0$ for all non-water-storage nodes $k$ \atallt{}.
+  \end{itemize}
+
+\end{itemize}
