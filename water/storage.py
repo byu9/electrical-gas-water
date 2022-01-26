@@ -26,7 +26,7 @@ initial_soc = {
 
 soc_lims = {
     # node: (gal_lo, gal_hi),
-    '8': (2, 6000),
+    '8': (0, 6000),
 }
 
 soc_lims_lo = dict()
