@@ -120,8 +120,36 @@ for bus, (lo, hi) in power_to_gas_output_lims.items():
 
 
 #----------------------------------------------------------------------
-water_pump_buses = {}
+water_pump_mappings = {
+    # bus: (water_pipeline_s, water_pipeline_r)
+    '633': ('1', '2'),
+}
+
+water_pump_efficiencies = {
+    # bus: gal_ftw_per_watt_hour
+    '633': 900,
+}
+
+water_pump_p_lims = {
+    # bus: (watts_lo, watts_hi)
+    '633': (-inf, inf),
+}
+
+water_pump_q_lims = {
+    # bus: (vars_lo, vars_hi)
+    '633': (-inf, inf),
+}
+
+water_pump_buses = water_pump_mappings.keys()
+
 water_pump_p_lims_lo = dict()
 water_pump_p_lims_hi = dict()
+for node, (lo, hi) in water_pump_p_lims.items():
+    water_pump_p_lims_lo[node] = lo
+    water_pump_p_lims_hi[node] = hi
+
 water_pump_q_lims_lo = dict()
 water_pump_q_lims_hi = dict()
+for node, (lo, hi) in water_pump_q_lims.items():
+    water_pump_q_lims_lo[node] = lo
+    water_pump_q_lims_hi[node] = hi
