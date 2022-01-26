@@ -61,7 +61,7 @@ def constant_speed_pump_pres(flow_gph, a1, a0):
 
 pump_induced_pres_funcs = {
     # (pipe_s, pipe_r): callable(flow_gph) -> pres_ftw
-    ('1', '2'): lambda flow: constant_speed_pump_pres(flow, a1=0.1, a0=0.1),
+    ('1', '2'): lambda flow: constant_speed_pump_pres(flow, a1=0, a0=500),
 }
 
 
