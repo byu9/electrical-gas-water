@@ -85,6 +85,45 @@ from gas.storage import (
     discharge_flow_lims as GLdis_lims,
 )
 
+#----------------------------------------------------------------------
+from water.topology import (
+    graph as G_water,
+)
+
+from water.nodes import (
+    pres_lims_lo as y_lims_lo,
+    pres_lims_hi as y_lims_hi,
+    elevation_induced_pressure as h,
+)
+
+from water.lines import (
+    water_pump_lines,
+    pump_induced_pres_funcs as Phi_W,
+    flow_lims_lo as f_lims_lo,
+    flow_lims_hi as f_lims_hi,
+    pres_loss_coeffs as RP,
+)
+
+from water.supply import (
+    nodes as water_supply_nodes,
+    flow_lims_lo as fG_lims_lo,
+    flow_lims_hi as fG_lims_hi,
+)
+
+from water.demand import (
+    demand as dW,
+)
+
+from water.storage import (
+    nodes as water_storage_nodes,
+    soc_lims_lo as SW_lims_lo,
+    soc_lims_hi as SW_lims_hi,
+    initial_soc as water_storage_initial_soc,
+    storage_flow_lims_lo as fT_lims_lo,
+    storage_flow_lims_hi as fT_lims_hi,
+)
+
+
 
 #----------------------------------------------------------------------
 from coupling import (
@@ -574,6 +613,186 @@ model.addConstrs((
 ), name='16')
 
 
+#----------------------------------------------------------------------
+# For all water nodes
+#----------------------------------------------------------------------
+y = {
+
+    (k, t): model.addVar(name='y({})@{}'.format(k, t),
+                         lb=y_lims_lo[k],
+                         ub=y_lims_hi[k])
+
+    for k in G_water.nodes
+    for t in T
+}
+
+fG = {
+    (k, t): model.addVar(name='fG({})@{}'.format(k, t),
+                         lb=fG_lims_lo[k],
+                         ub=fG_lims_hi[k]) if k in water_supply_nodes else 0
+
+    for k in G_water.nodes
+    for t in T
+}
+
+fT = {
+    (k, t): model.addVar(name='fT({})@{}'.format(k, t),
+                         lb=fT_lims_lo[k],
+                         ub=fT_lims_hi[k]) if k in water_storage_nodes else 0
+
+    for k in G_water.nodes
+    for t in T
+}
+
+
+#----------------------------------------------------------------------
+# For all water pipelines
+#----------------------------------------------------------------------
+f = {
+    (k, n, t): model.addVar(name='f({}->{})@{}'.format(k, n, t),
+                            lb=f_lims_lo[k,n],
+                            ub=f_lims_hi[k,n])
+
+    for (k, n) in G_water.edges
+    for t in T
+}
+
+alpha = {
+    (k, n, t): (model.addVar(name='alpha({}->{})@{}'.format(k, n, t),
+                            vtype=gurobi.GRB.BINARY)
+                if (k, n) in water_pump_lines else 1)
+
+    for (k, n) in G_water.edges
+    for t in T
+}
+
+yG = {
+    (k, n, t): (model.addVar(name='yG({}->{})@{}'.format(k, n, t),
+                             lb=-inf,
+                             ub=inf)
+                if (k, n) in water_pump_lines else 0)
+
+    for (k, n) in G_water.edges
+    for t in T
+}
+
+#----------------------------------------------------------------------
+# For all water storage nodes
+#----------------------------------------------------------------------
+SW = {
+    (k, t): (water_storage_initial_soc[k] if t == t0 else
+             model.addVar(name='SW({})@{}'.format(k, t),
+                          lb=SW_lims_lo[k],
+                          ub=SW_lims_hi[k]))
+
+    for k in water_storage_nodes
+    for t in T_ext
+}
+
+
+#----------------------------------------------------------------------
+# Water constraints
+#----------------------------------------------------------------------
+model.addConstrs((
+    sum(f[s,k,t] for s in G_water.parents_of(k)) +
+    fG[k,t]
+
+    ==
+
+    sum(f[k,r,t] for r in G_water.children_of(k)) +
+    fT[k,t]                                       +
+    dW[k,t]
+
+
+    for k in G_water.nodes
+    for t in T
+), name='17')
+
+M = 1e6
+model.addConstrs((
+    f[k,n,t]
+
+    <=
+
+    alpha[k,n,t] * M
+
+    for (k, n) in G_water.edges
+    for t in T
+), name='18')
+
+model.addConstrs((
+    y[k,t] - y[n,t] +
+    h[k]   - h[n]   +
+    yG[k,n,t]
+
+    <=
+
+    (2* 2**0.5 - 2) * RP[k,n] * f_lims_hi[k,n] * f[k,n,t] +
+    (3 - 2* 2**0.5) * RP[k,n] * f_lims_hi[k,n]
+
+    for (k, n) in G_water.edges
+    for t in T
+), name='19')
+
+model.addConstrs((
+    y[k,t] - y[n,t] +
+    h[k]   - h[n]   +
+    yG[k,n,t]
+
+    >=
+
+    (2* 2**0.5 - 2) * RP[k,n] * f_lims_lo[k,n] * f[k,n,t] +
+    (3 - 2* 2**0.5) * RP[k,n] * f_lims_lo[k,n]
+
+    for (k, n) in G_water.edges
+    for t in T
+), name='20')
+
+model.addConstrs((
+    y[k,t] - y[n,t] +
+    h[k]   - h[n]   +
+    yG[k,n,t]
+
+    >=
+
+    2* RP[k,n] * f_lims_hi[k,n] * f[k,n,t] -
+    RP[k,n] * f_lims_hi[k,n]**2
+
+    for (k, n) in G_water.edges
+    for t in T
+), name='21')
+
+model.addConstrs((
+    y[k,t] - y[n,t] +
+    h[k]   - h[n]   +
+    yG[k,n,t]
+
+    <=
+
+    2* RP[k,n] * f_lims_lo[k,n] * f[k,n,t] -
+    RP[k,n] * f_lims_lo[k,n]**2
+
+    for (k, n) in G_water.edges
+    for t in T
+), name='22')
+
+model.addConstrs((
+    yG[k,n,t]
+
+    ==
+
+    Phi_W[k,n](f[k,n,t])
+
+    for (k, n) in water_pump_lines
+    for t in T
+), name='23')
+
+model.addConstrs((
+    SW[k, t] == SW[k, T_ext[d-1]] + fT[k,t]
+
+    for k in water_storage_nodes
+    for d, t in enumerate(T_ext) if d != 0
+), name='24')
 
 #----------------------------------------------------------------------
 # Objective
