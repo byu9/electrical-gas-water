@@ -68,7 +68,7 @@ pump_induced_pres_funcs = {
 
 def calc_pres_loss_coeff(len_ft, diameter_inches):
     # in ft/s^2
-    GRAVITATIONAL_ACCELERATION = 32.2
+    GRAVITATIONAL_ACCELERATION = 9.8
 
     g = GRAVITATIONAL_ACCELERATION
     L = len_ft
@@ -80,7 +80,7 @@ def calc_pres_loss_coeff(len_ft, diameter_inches):
     # to feet-water-column-per-(gallons_per_hour)^2
     pres_loss_coeff = psi_per_gpm2_to_ftw_per_gph2(pres_loss_coeff)
 
-    return pres_loss_coeff
+    return pres_loss_coeff / 100000
 
 
 pres_loss_coeffs = {
