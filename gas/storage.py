@@ -15,12 +15,12 @@ initial_soc = {
 
 charging_flow_lims = {
     # node: mcf_per_h
-    'N05': 100,
+    'N05': 1E6,
 }
 
 discharge_flow_lims = {
     # node: mcf_per_h
-    'N05': 100,
+    'N05': 1E6,
 }
 
 
