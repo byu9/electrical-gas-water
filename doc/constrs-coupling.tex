@@ -12,8 +12,8 @@ For all power-to-gas buses $i$ mapped to gas node $m$ \atallt{}
 
 For all water-pump buses $i$ mapped to water pipeline $kn$ \atallt{}
 \begin{equation}
-  \eta^W_i P_{i,t} \geq a_{kn} f^2_{kn,t} + b_{kn} f_{kn,t}
+  \eta^W_i P^P_{i,t} \geq f_{kn,t} \cdot \Phi^W_{k,n}(f_{kn,t})
 \end{equation}
 \begin{equation}
-  \eta^W_i P_{i,t} \leq (a_{kn} \hi{f_{kn}} + b_{kn}) f_{kn,t}
+  \eta^W_i P^P_{i,t} \leq f_{kn,t} \cdot \Phi^W_{k,n}(\hi{f_{kn}})
 \end{equation}
