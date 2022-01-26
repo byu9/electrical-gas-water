@@ -7,7 +7,7 @@ nodes = {
 
 flow_lims = {
     # node: (gal_per_h_lo, gal_per_h_hi)
-    '1': (gpm_to_gph(0), gpm_to_gph(600)),
+    '1': (gpm_to_gph(0), gpm_to_gph(10000)),
 }
 
 
