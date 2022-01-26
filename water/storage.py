@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+from misc.unit_conversions import gpm_to_gph
 
 nodes = {
     '8',
@@ -6,7 +7,7 @@ nodes = {
 
 storage_flow_lims = {
     # node: (gal_per_h_lo, gal_per_h_hi),
-    '8': (-500, 500),
+    '8': (gpm_to_gph(-600), gpm_to_gph(600)),
 }
 
 storage_flow_lims_lo = dict()
@@ -25,7 +26,7 @@ initial_soc = {
 
 soc_lims = {
     # node: (gal_lo, gal_hi),
-    '8': (2, 600),
+    '8': (2, 6000),
 }
 
 soc_lims_lo = dict()

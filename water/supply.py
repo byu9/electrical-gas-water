@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+from misc.unit_conversions import gpm_to_gph
 
 nodes = {
     '1',
@@ -6,7 +7,7 @@ nodes = {
 
 flow_lims = {
     # node: (gal_per_h_lo, gal_per_h_hi)
-    '1': (0, 5000),
+    '1': (gpm_to_gph(0), gpm_to_gph(600)),
 }
 
 

@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from misc.unit_conversions import (
     psi_per_gpm2_to_ftw_per_gph2,
+    gpm_to_gph,
 )
 
 from math import pi
@@ -10,17 +11,17 @@ from math import pi
 flow_lims = {
     # (s, r): (gal_per_h_lo, gal_per_h_hi)
 
-    ('2', '3'): (-1000, 1000),
-    ('3', '7'): (-1000, 1000),
-    ('3', '4'): (-1000, 1000),
-    ('4', '6'): (-1000, 1000),
-    ('6', '7'): (-1000, 1000),
-    ('4', '5'): (-1000, 1000),
-    ('5', '6'): (-1000, 1000),
-    ('7', '8'): (0, 1000),
+    ('2', '3'): (gpm_to_gph(-600), gpm_to_gph(600)),
+    ('3', '7'): (gpm_to_gph(-600), gpm_to_gph(600)),
+    ('3', '4'): (gpm_to_gph(-600), gpm_to_gph(600)),
+    ('4', '6'): (gpm_to_gph(-600), gpm_to_gph(600)),
+    ('6', '7'): (gpm_to_gph(-600), gpm_to_gph(600)),
+    ('4', '5'): (gpm_to_gph(-600), gpm_to_gph(600)),
+    ('5', '6'): (gpm_to_gph(-600), gpm_to_gph(600)),
+    ('7', '8'): (gpm_to_gph(-600), gpm_to_gph(600)),
 
     # pump-enabled pipelines
-    ('1', '2'): (0, 1000),
+    ('1', '2'): (gpm_to_gph(0),    gpm_to_gph(600)),
 }
 
 flow_lims_lo = dict()
