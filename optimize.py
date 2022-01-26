@@ -136,12 +136,14 @@ from coupling import (
 
     gas_generator_buses,
     gas_generator_nodes,
+    gas_generator_mappings,
     gas_generator_efficiency     as eta_G2P,
     gas_generator_flow_lims_lo   as GLG_lims_lo,
     gas_generator_flow_lims_hi   as GLG_lims_hi,
 
     power_to_gas_buses,
     power_to_gas_nodes,
+    power_to_gas_mappings,
     power_to_gas_efficiency      as eta_P2G,
     power_to_gas_p_lims_lo       as PT_lims_lo,
     power_to_gas_p_lims_hi       as PT_lims_hi,
@@ -153,6 +155,8 @@ from coupling import (
     natural_gas_heat_value       as HHVSNG,
 
     water_pump_buses,
+    water_pump_mappings,
+    water_pump_efficiencies      as eta_W,
     water_pump_p_lims_lo         as PP_lims_lo,
     water_pump_p_lims_hi         as PP_lims_hi,
     water_pump_q_lims_lo         as QP_lims_lo,
@@ -793,6 +797,54 @@ model.addConstrs((
     for k in water_storage_nodes
     for d, t in enumerate(T_ext) if d != 0
 ), name='24')
+
+
+#----------------------------------------------------------------------
+# Coupling constraints
+#----------------------------------------------------------------------
+model.addConstrs((
+    PG[i,t]
+
+    ==
+
+    eta_G2P * GLG[m,t] * HHVSNG
+
+    for i, m in gas_generator_mappings.items()
+    for t in T
+), name='25')
+
+model.addConstrs((
+    GT[m,t]
+
+    ==
+
+    eta_P2G * PT[i,t] / HHVSNG
+
+    for i, m in power_to_gas_mappings.items()
+    for t in T
+), name='26')
+
+model.addConstrs((
+    eta_W[i] * PP[i,t]
+
+    >=
+
+    Phi_W[k,n](f[k,n,t]) * f[k,n,t]
+
+    for i, (k, n) in water_pump_mappings.items()
+    for t in T
+), name='27')
+
+model.addConstrs((
+    eta_W[i] * PP[i,t]
+
+    <=
+
+    Phi_W[k,n](f_lims_hi[k,n]) * f[k,n,t]
+
+    for i, (k, n) in water_pump_mappings.items()
+    for t in T
+), name='28')
 
 #----------------------------------------------------------------------
 # Objective
