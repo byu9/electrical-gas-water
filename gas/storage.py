@@ -27,7 +27,7 @@ discharge_flow_lims = {
 
 soc_lims = {
     # node: (mcf_lo, mcf_hi)
-    'N05': (2, 500),
+    'N05': (0, 1E6),
 }
 
 soc_lims_lo = dict()
