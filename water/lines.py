@@ -11,17 +11,17 @@ from math import pi
 flow_lims = {
     # (s, r): (gal_per_h_lo, gal_per_h_hi)
 
-    ('2', '3'): (gpm_to_gph(-600), gpm_to_gph(600)),
-    ('3', '7'): (gpm_to_gph(-600), gpm_to_gph(600)),
-    ('3', '4'): (gpm_to_gph(-600), gpm_to_gph(600)),
-    ('4', '6'): (gpm_to_gph(-600), gpm_to_gph(600)),
-    ('6', '7'): (gpm_to_gph(-600), gpm_to_gph(600)),
-    ('4', '5'): (gpm_to_gph(-600), gpm_to_gph(600)),
-    ('5', '6'): (gpm_to_gph(-600), gpm_to_gph(600)),
-    ('7', '8'): (gpm_to_gph(-600), gpm_to_gph(600)),
+    ('2', '3'): (gpm_to_gph(-1000600), gpm_to_gph(1000600)),
+    ('3', '7'): (gpm_to_gph(-1000600), gpm_to_gph(1000600)),
+    ('3', '4'): (gpm_to_gph(-1000600), gpm_to_gph(1000600)),
+    ('4', '6'): (gpm_to_gph(-1000600), gpm_to_gph(1000600)),
+    ('6', '7'): (gpm_to_gph(-1000600), gpm_to_gph(1000600)),
+    ('4', '5'): (gpm_to_gph(-1000600), gpm_to_gph(1000600)),
+    ('5', '6'): (gpm_to_gph(-1000600), gpm_to_gph(1000600)),
+    ('7', '8'): (gpm_to_gph(-1000600), gpm_to_gph(1000600)),
 
     # pump-enabled pipelines
-    ('1', '2'): (gpm_to_gph(0),    gpm_to_gph(600)),
+    ('1', '2'): (gpm_to_gph(0),    gpm_to_gph(100600)),
 }
 
 flow_lims_lo = dict()
