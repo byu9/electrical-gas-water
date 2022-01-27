@@ -661,22 +661,23 @@ f = {
     for t in T
 }
 
+#----------------------------------------------------------------------
+# For all pump-enabled pipelines
+#----------------------------------------------------------------------
 alpha = {
-    (k, n, t): (model.addVar(name='alpha({}->{})@{}'.format(k, n, t),
+    (k, n, t): model.addVar(name='alpha({}->{})@{}'.format(k, n, t),
                             vtype=gurobi.GRB.BINARY)
-                if (k, n) in water_pump_lines else 1)
 
-    for (k, n) in G_water.edges
+    for (k, n) in water_pump_lines
     for t in T
 }
 
 yG = {
-    (k, n, t): (model.addVar(name='yG({}->{})@{}'.format(k, n, t),
-                             lb=-inf,
-                             ub=inf)
-                if (k, n) in water_pump_lines else 0)
+    (k, n, t): model.addVar(name='yG({}->{})@{}'.format(k, n, t),
+                            lb=-inf,
+                            ub=inf)
 
-    for (k, n) in G_water.edges
+    for (k, n) in water_pump_lines
     for t in T
 }
 
@@ -712,71 +713,67 @@ model.addConstrs((
     for t in T
 ), name='17')
 
-M = 1e6
-model.addConstrs((
-    f[k,n,t]
-
-    <=
-
-    alpha[k,n,t] * M
-
-    for (k, n) in G_water.edges
-    for t in T
-), name='18')
-
 model.addConstrs((
     y[k,t] - y[n,t] +
-    h[k]   - h[n]   +
-    yG[k,n,t]
+    h[k]   - h[n]
 
     <=
 
     (2* 2**0.5 - 2) * RP[k,n] * f_lims_hi[k,n] * f[k,n,t] +
     (3 - 2* 2**0.5) * RP[k,n] * f_lims_hi[k,n]
 
-    for (k, n) in G_water.edges
+    for (k, n) in G_water.edges if (k, n) not in water_pump_lines
     for t in T
-), name='19')
+), name='18')
 
 model.addConstrs((
     y[k,t] - y[n,t] +
-    h[k]   - h[n]   +
-    yG[k,n,t]
+    h[k]   - h[n]
 
     >=
 
     (2* 2**0.5 - 2) * RP[k,n] * f_lims_lo[k,n] * f[k,n,t] +
     (3 - 2* 2**0.5) * RP[k,n] * f_lims_lo[k,n]
 
-    for (k, n) in G_water.edges
+    for (k, n) in G_water.edges if (k, n) not in water_pump_lines
     for t in T
-), name='20')
+), name='19')
 
 model.addConstrs((
     y[k,t] - y[n,t] +
-    h[k]   - h[n]   +
-    yG[k,n,t]
+    h[k]   - h[n]
 
     >=
 
     2* RP[k,n] * f_lims_hi[k,n] * f[k,n,t] -
     RP[k,n] * f_lims_hi[k,n]**2
 
-    for (k, n) in G_water.edges
+    for (k, n) in G_water.edges if (k, n) not in water_pump_lines
     for t in T
-), name='21')
+), name='20')
 
 model.addConstrs((
     y[k,t] - y[n,t] +
-    h[k]   - h[n]   +
-    yG[k,n,t]
+    h[k]   - h[n]
 
-    <=
+    >=
 
     2* RP[k,n] * f_lims_lo[k,n] * f[k,n,t] -
     RP[k,n] * f_lims_lo[k,n]**2
 
-    for (k, n) in G_water.edges
+    for (k, n) in G_water.edges if (k, n) not in water_pump_lines
+    for t in T
+), name='21')
+
+M1 = 1e12
+model.addConstrs((
+    f[k,n,t]
+
+    <=
+
+    alpha[k,n,t] * M1
+
+    for (k, n) in water_pump_lines
     for t in T
 ), name='22')
 
@@ -791,12 +788,47 @@ model.addConstrs((
     for t in T
 ), name='23')
 
+
+M2 = 1e12
+AW = {
+    (k, n, t): (
+        y[k,t] - y[n,t] + h[k] - h[n] + yG[k,n,t] + M2 * (1 - alpha[k,n,t])
+    )
+
+    for (k, n) in water_pump_lines
+    for t in T
+}
+
+BW = {
+    (k, n, t): (
+        y[k,t] - y[n,t] + h[k] - h[n] + yG[k,n,t] + M2 * (alpha[k,n,t] - 1)
+    )
+
+    for (k, n) in water_pump_lines
+    for t in T
+}
+
+model.addConstrs((
+    RP[k,n] * f[k,n,t]**2 - AW[k,n,t] <= 0
+
+    for (k, n) in water_pump_lines
+    for t in T
+), name='24')
+
+model.addConstrs((
+    BW[k,n,t] - RP[k,n] * f_lims_hi[k,n] * f[k,n,t] <= 0
+
+    for (k, n) in water_pump_lines
+    for t in T
+), name='25')
+
+
 model.addConstrs((
     SW[k, t] == SW[k, T_ext[d-1]] + fT[k,t]
 
     for k in water_storage_nodes
     for d, t in enumerate(T_ext) if d != 0
-), name='24')
+), name='26')
 
 
 #----------------------------------------------------------------------
@@ -811,7 +843,7 @@ model.addConstrs((
 
     for i, m in gas_generator_mappings.items()
     for t in T
-), name='25')
+), name='27')
 
 model.addConstrs((
     GT[m,t]
@@ -822,7 +854,7 @@ model.addConstrs((
 
     for i, m in power_to_gas_mappings.items()
     for t in T
-), name='26')
+), name='28')
 
 model.addConstrs((
     eta_W[i] * PP[i,t]
@@ -833,7 +865,7 @@ model.addConstrs((
 
     for i, (k, n) in water_pump_mappings.items()
     for t in T
-), name='27')
+), name='29')
 
 model.addConstrs((
     eta_W[i] * PP[i,t]
@@ -844,7 +876,7 @@ model.addConstrs((
 
     for i, (k, n) in water_pump_mappings.items()
     for t in T
-), name='28')
+), name='30')
 
 #----------------------------------------------------------------------
 # Objective
