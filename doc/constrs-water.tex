@@ -7,43 +7,64 @@ For all water nodes $k$ \atallt{}
   f^T_{k,t} + d^W_{k,t}
 \end{equation}
 
-For all water pipelines $kn$ \atallt{}, and arbitrary positive real number $M$
-larger than all anticipated water pipeline flow
-\begin{equation}
-  f_{kn,t} \leq \alpha_{kn,t} \cdot M
-\end{equation}
+For all non-pump-enabled pipelines $kn$ \atallt{}
 
 \begin{equation}
-  y_{k,t} - y_{n,t} + h_k - h_n + y^G_{kn,t}
+  y_{k,t} - y_{n,t} + h_k - h_n
   \leq
   (2\sqrt{2} - 2) R^P_{kn} \hi{f_{kn}} f_{kn,t} +
   (3 - 2\sqrt{2}) R^P_{kn} \hi{f_{kn}}
 \end{equation}
 
 \begin{equation}
-  y_{k,t} - y_{n,t} + h_k - h_n + y^G_{kn,t}
+  y_{k,t} - y_{n,t} + h_k - h_n
   \geq
   (2\sqrt{2} - 2) R^P_{kn} \lo{f_{kn}} f_{kn,t} +
   (3 - 2\sqrt{2}) R^P_{kn} \lo{f_{kn}}
 \end{equation}
 
 \begin{equation}
-  y_{k,t} - y_{n,t} + h_k - h_n + y^G_{kn,t}
+  y_{k,t} - y_{n,t} + h_k - h_n
   \geq
   2 R^P_{kn} \hi{f_{kn}} f_{kn,t} - R^P_{kn}\hi{f_{kn}}^2
 \end{equation}
 
 \begin{equation}
-  y_{k,t} - y_{n,t} + h_k - h_n + y^G_{kn,t}
+  y_{k,t} - y_{n,t} + h_k - h_n
   \leq
   2 R^P_{kn} \lo{f_{kn}} f_{kn,t} - R^P_{kn}\lo{f_{kn}}^2
 \end{equation}
 
-For all pump-enabled pipelines $kn$
+For all pump-enabled pipelines $kn$ \atallt{}, and arbitrary positive real
+number $M_1$ larger than all anticipated water pipeline flow, arbitrary positive
+real number $M_2$ larger than all anticipated water pressure
+
+\begin{equation}
+  f_{kn,t} \leq \alpha_{kn,t} \cdot M_1
+\end{equation}
 
 \begin{equation}
   y^G_{kn,t} = \Phi^W_{kn}(f_{kn,t})
 \end{equation}
+
+\begin{equation}
+  R^P_{kn} f^2_{kn,t} - A^W_{kn,t} \leq 0
+\end{equation}
+
+\begin{equation}
+  B^W_{kn,t} - R^P_{kn} \hi{f_{kn}} f_{kn,t} \leq 0
+\end{equation}
+
+
+Where
+\begin{equation*}
+  A^W_{kn,t} = y_{k,t} - y_{n,t} + h_k - h_n + y^G_{kn,t} + M_2 \cdot (1 - \alpha_{kn,t})
+\end{equation*}
+
+\begin{equation*}
+  B^W_{kn,t} = y_{k,t} - y_{n,t} + h_k - h_n + y^G_{kn,t} + M_2 \cdot (\alpha_{kn,t} - 1)
+\end{equation*}
+
 
 For all water storage nodes $k$ at all timepoints $t$ in the extended scheduling
 horizon excluding the extended initial timepoint

@@ -6,29 +6,22 @@
   flowing to child $n$.
   \begin{itemize}
   \item \gls{define} decision variable $[\lo{f_{kn}}, \hi{f_{kn}}]$ for all
-    non-pump-enabled pipelines $kn$ \atallt{}.
-  \item \gls{define} decision variable $[0, \hi{f_{kn}}]$ for all pump-enabled
     pipelines $kn$ \atallt{}.
   \end{itemize}
 
-\item $\alpha_{kn,t}$ status of pipeline $kn$ over \intervaloft{}.
-  A non-zero value  indicates the pipeline is on.
+\item $R^P_{kn}$ coefficient of loss of water pressure in
+  \gls{unit:water-pres-loss} due to friction caused by the flow on pipeline
+  $kn$. Always positive.
+
   \begin{itemize}
-  \item \gls{define} constant $1$ for all non-pump-enabled pipelines $kn$
-    \atallt{}.
-  \item \gls{define} \emph{binary} decision variable for all pump-enabled water
-    pipelines $kn$ \atallt{}.
+  \item \gls{imported} constant for all non-pump-enabled pipelines $kn$.
   \end{itemize}
 
-\item $y^G_{kn,t}$ average pump-induced pressure gain in \gls{unit:water-pres}
-  between the sending $k$ end and the receiving $n$ end of pump-enabled pipeline
-  $kn$ at \intervaloft{}.
-  \begin{itemize}
-  \item \gls{define} decision variable $(-\infty, \infty)$ for pump-enabled
-    pipeline $kn$ \atallt{}.
-  \item \gls{define} constant $0$ for all non-pump-enabled pipeline $kn$
-    \atallt{}.
-  \end{itemize}
+\end{itemize}
+
+
+\paragraph{For All Pump-Enabled Pipelines}
+\begin{itemize}
 
 \item $\Phi^{W}_{kn}(f)$ a function of pipeline flow $f$ returning average
   pump-induced pressure gain in \gls{unit:water-pres} between the sending $k$
@@ -39,12 +32,19 @@
   \item \gls{imported} linear function for all pump-enabled pipelines $kn$.
   \end{itemize}
 
-\item $R^P_{kn}$ coefficient of loss of water pressure in
-  \gls{unit:water-pres-loss} due to friction caused by the flow on pipeline
-  $kn$. Always positive.
-
+\item $\alpha_{kn,t}$ status of pump-enabled pipeline $kn$ over \intervaloft{}.
+  A non-zero value indicates the pipeline is on.
   \begin{itemize}
-  \item \gls{imported} constant for all non-pump-enabled pipelines $kn$.
+  \item \gls{define} \emph{binary} decision variable for all pump-enabled water
+    pipelines $kn$ \atallt{}.
+  \end{itemize}
+
+\item $y^G_{kn,t}$ average pump-induced pressure gain in \gls{unit:water-pres}
+  between the sending $k$ end and the receiving $n$ end of pump-enabled pipeline
+  $kn$ at \intervaloft{}.
+  \begin{itemize}
+  \item \gls{define} decision variable $(-\infty, \infty)$ for pump-enabled
+    pipeline $kn$ \atallt{}.
   \end{itemize}
 
 \end{itemize}
