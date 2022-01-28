@@ -127,7 +127,7 @@ water_pump_mappings = {
 
 water_pump_efficiencies = {
     # bus: gal_ftw_per_watt_hour
-    '633': 9000,
+    '633': 400,
 }
 
 water_pump_p_lims = {
