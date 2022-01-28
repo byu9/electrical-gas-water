@@ -888,18 +888,13 @@ model.setObjective(sum(
     for t in T
 ), gurobi.GRB.MINIMIZE)
 
-
 model.optimize()
+model.display()
 
+#----------------------------------------------------------------------
+# Diagnostics
+#----------------------------------------------------------------------
 if model.status == gurobi.GRB.INFEASIBLE:
     model.computeIIS()
     model.write("infeasible.ilp")
-
-else:
-    model.display()
-
-    print('{}\n# {}\n{}'.format('#'*70, 'Results', '#'*70))
-    print('objective: {}'.format(model.getObjective().getValue()))
-
-    for v in model.getVars():
-        print('{:<60}= {}'.format(v.VarName, v.X))
+    raise RuntimeError('Model is infeasible')
