@@ -22,7 +22,7 @@ for node, (lo, hi) in pres_lims.items():
 
 elevation = {
     # node: elevation_ft
-    '1': 700,
+    '1': 600,
     '2': 520,
     '3': 500,
     '4': 500,
@@ -32,7 +32,7 @@ elevation = {
     '8': 550,
 }
 
-reference_elevation = 700
+reference_elevation = 0
 
 elevation_induced_pressure = {
     node: reference_elevation - node_elevation
