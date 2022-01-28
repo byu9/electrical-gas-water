@@ -62,13 +62,12 @@ def constant_speed_pump_pres(flow_gph, a1, a0):
 pump_induced_pres_funcs = {
     # (pipe_s, pipe_r): callable(flow_gph) -> pres_ftw
     ('1', '2'): lambda flow: constant_speed_pump_pres(flow,
-                                                      a1=-1.5, a0=300),
+                                                      a1=-0, a0=230),
 }
 
 
 
 def calc_pres_loss_coeff(len_ft, diameter_inches):
-    # in ft/s^2
     GRAVITATIONAL_ACCELERATION = 32.2
 
     g = GRAVITATIONAL_ACCELERATION
