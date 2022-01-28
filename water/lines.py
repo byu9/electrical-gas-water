@@ -69,16 +69,25 @@ pump_induced_pres_funcs = {
 
 def calc_pres_loss_coeff(len_ft, diameter_inches):
     GRAVITATIONAL_ACCELERATION = 32.2
+    CONCRETE_PIPE_ENTRANCE_HEADLOSS_COEFFICIENT = 0.2
+
+    SECONDS_PER_HOUR = 3600
+    INCHES_PER_FOOT = 12
+    CUBIC_INCHES_PER_GALLON = 231
+
+    radius_inches = diameter_inches / 2
+    cross_section_squared_inches = radius_inches**2 * pi
+
+    FOOT_PER_SECOND_VELOCITY_PER_GPH = (
+        # 1 GPH *
+        CUBIC_INCHES_PER_GALLON / cross_section_squared_inches /
+        INCHES_PER_FOOT / SECONDS_PER_HOUR
+    )
 
     g = GRAVITATIONAL_ACCELERATION
-    L = len_ft
-    D = diameter_inches
+    Ke = CONCRETE_PIPE_ENTRANCE_HEADLOSS_COEFFICIENT
 
-    # based on PSI/GPM^2
-    pres_loss_coeff = 8 * 890.9 * L / (pi**2 * g * D * 1E4)
-
-    # to feet-water-column-per-(gallons_per_hour)^2
-    pres_loss_coeff = psi_per_gpm2_to_ftw_per_gph2(pres_loss_coeff)
+    pres_loss_coeff = Ke / (2*g) * FOOT_PER_SECOND_VELOCITY_PER_GPH**2
 
     return pres_loss_coeff
 
