@@ -1,0 +1,131 @@
+\documentclass{article}
+\title{Implementation Report}
+\usepackage{listings}
+\lstset{basicstyle=\ttfamily\small,breaklines=true}
+
+\begin{document}
+\maketitle
+
+
+
+
+\section{Overview}
+The convexified optimization problem was instantiated for a 3-part integrated
+system consisting of separate electrical, gas, and water components.
+
+The IEEE 13-feeder test system with simulated time series for load and renewable
+energy resources was selected as the electrical component. The GasLib dataset
+with simulated demand data was selected as the gas component. A modified system
+adapted from an EPANET2 sample network with simulated water demand was selected
+for the water component.
+
+The coupling elements included 1 gas generator, 1 power-to-gas facility, and 1
+water pump. Wholesale electricity provided by the power grid through a
+substation node was implemented as a conventional generator with a linear cost
+function.
+
+The scheduling horizon contained 2 hours.
+
+
+
+
+\section{Platform}
+The results were obtained on a platform running a Linux distribution with kernel
+version 5.10.92-1 on an Intel Skylake CPU with 4 hardware threads, a maximum
+clock frequency of 2.30 GHz, and 3072 KB of level-1 cache per thread. The
+platform has around 15 GB of available DDR4 physical memory. The solver package
+was Gurobipy 9.5.0 build v9.5.0rc5 with an academic lincese. The program was
+executed by Python interpreter version 3.9.2.
+
+An academic license was used since the number of decision variables exceeded the
+limitation of the free license.
+
+
+
+
+\section{Statistics}
+The instantiation contained 2 quadratic objective terms, in total of 250
+decision variables, of which 248 were continuous and 2 were binary, 260 linear
+constraints, and 68 quadratic constraints. The solution was obtained after 23
+iterations in a total of 0.03 seconds.
+
+
+
+
+\section{Issues and Workarounds}
+
+\subsection{Units of Measure}
+The model involved 3 different systems each having their individual convention
+for units of measure. Converting quantities into SI units in favor of uniformity
+were initially considered but dismissed during a discussion due to the following
+
+\begin{enumerate}
+\item The datasets were primarily imperial.
+\item SI units could cause excessively small or large constants, resulting in an
+  ill-conditioned matrix in the solver that may exacerbate the loss of precision
+  in IEEE-754 based floating point arithmetics.
+\end{enumerate}
+
+\paragraph{Workarounds}
+The chosen workaround was to select a list of units that creates constants with
+reasonable magnitudes and employ unit conversions extensively to ensure the the
+meaningfulness of the results.
+
+An alternative workaround to address the unit-related numeric issue is to use an
+SI-based per-unit system for the electrical, gas, and water components, for
+which the suitable bases are selected such that the magnitude of the resulting
+quantities are around 1. This approach was not adopted since the details of the
+components were not initially clear during the early stages of implementation,
+and out of the fear that the per-unit system would further complicate the
+problem and obstruct the diagnosis of potential defects.
+
+
+\subsection{Big-M Method}
+The constant $M$ used in constraints formulated using the big-M method resulted
+in an ill-conditioned matrix in the solver that may exacerbate the loss of
+precision in IEEE-754 floating point arithmetics.
+
+\paragraph{Workaround}
+The big-M method were only used for constraining the water flow to the on-off
+status of the pump. The constant $M$ was selected such that it was larger than
+the all higher bounds of the water flow in pump-enabled pipelines, so that the
+flows are not affected by the arbitrary selection of $M$, but not large enough
+to excessively increase the condition number of the matrix in the solver.
+
+
+\subsection{Sampling Frequency}
+The original mathematical model was based on the assumption that the scheduling
+horizon and all time series data had a uniform sampling rate of 1 (unit of
+time), since a number of equations implicitly multiplied by 1 (unit of time).
+
+\paragraph{Workaround}
+A clause was added in the Contract of Implementation that designates the
+scheduling inteval to be 1 hour and units of all quantities involving
+multiplication or division by time to be hour-based.
+
+
+\subsection{Fields of Definition of Symbol Sets}
+The fields of definition of some symbol sets were unclear or unspecified.
+
+\paragraph{Workaround}
+A Contract of Implementation was created to clarify the unspecified details in
+the model. The contract was periodically reviewed to ensure state of coherency.
+
+
+
+\subsection{Feasibility of the Water Component}
+The water component, when isolated from the rest of the system, was
+infeasible. It was found that after the removal of a water pump on line 7-8, the
+water model contained insufficient degrees of freedom. The constraint set
+resulted in an empty feasibility space.
+
+\paragraph{Workaround}
+The dataset for the water component was modified so that the topology was
+operative under a single pump.
+
+
+\section{Results}
+\lstinputlisting{results.txt}
+
+
+\end{document}
